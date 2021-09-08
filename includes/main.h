@@ -5,6 +5,8 @@
 # include <stdlib.h>
 # include "types.h"
 # include "error_and_free.h"
+# include "utils.h"
+
 
 
 #endif

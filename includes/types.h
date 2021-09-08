@@ -17,5 +17,12 @@ typedef enum e_errors {
 	FAILED_MALLOC				= -2,
 }	t_errors;
 
+typedef enum e_args {
+	PHILOSOPHERS,
+	T_DIE,
+	T_EAT,
+	T_SLEEP,
+	MUST_EAT
+} 	t_args;
 
 #endif
