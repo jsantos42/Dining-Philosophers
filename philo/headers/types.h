@@ -25,4 +25,11 @@ typedef enum e_args {
 	MUST_EAT
 } 	t_args;
 
+typedef struct s_data {
+	int	philosophers;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	must_eat;
+}	t_data;
 #endif
