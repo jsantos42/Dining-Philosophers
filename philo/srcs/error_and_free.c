@@ -1,4 +1,4 @@
-#include "../includes/error_and_free.h"
+#include "../headers/error_and_free.h"
 
 /*
 **	Prints the correct error message in the CLI before exiting the program.

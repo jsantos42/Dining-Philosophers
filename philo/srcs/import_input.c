@@ -1,4 +1,4 @@
-#include "../includes/import_input.h"
+#include "../headers/import_input.h"
 
 /*
 **	Imports the program arguments (which should all be ints) to an array.
