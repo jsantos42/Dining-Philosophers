@@ -3,8 +3,10 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include "types.h"
 # include "error_and_free.h"
+# include "input.h"
 # include "utils.h"
 
 
