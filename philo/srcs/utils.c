@@ -1,19 +1,5 @@
 #include "../headers/utils.h"
 
-int	*init_array(int elements)
-{
-	int	*array;
-	int iter;
-
-	array = malloc(elements);
-	if (!array)
-		error_management(FAILED_MALLOC);
-	iter = -1;
-	while (++iter < elements)
-		array[iter] = 0;
-	return (array);
-}
-
 int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')

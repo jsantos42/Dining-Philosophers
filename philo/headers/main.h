@@ -5,8 +5,8 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include "types.h"
-# include "error_and_free.h"
-# include "import_input.h"
+# include "terminate_program.h"
+# include "init_data.h"
 # include "utils.h"
 
 
