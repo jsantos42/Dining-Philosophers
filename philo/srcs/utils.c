@@ -1,5 +1,16 @@
 #include "../headers/utils.h"
 
+
+void	*malloc_or_terminate(void *data_to_free_if_error, size_t size)
+{
+	void	*output;
+
+	output = malloc(size);
+	if (!output)
+		terminate_program(data_to_free_if_error, MALLOC_FAILED);
+	return (output);
+}
+
 int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')

@@ -9,7 +9,7 @@ t_data	*init_data(int argc, char **argv)
 {
 	t_data	*data;
 
-	data = malloc(sizeof(t_data));
+	data = malloc_or_terminate(NULL, sizeof(t_data));
 	if (!is_input_correct(argc, argv))
 		terminate_program(data, ILLEGAL_INPUT);
 	import_input_args(argc, argv, data);

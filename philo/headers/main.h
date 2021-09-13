@@ -7,6 +7,7 @@
 # include "types.h"
 # include "terminate_program.h"
 # include "init_data.h"
+# include "print_philo_status.h"
 # include "utils.h"
 
 

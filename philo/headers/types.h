@@ -8,6 +8,11 @@
 **	the program.
 */
 
+# define FORK	"has taken a fork"
+# define EAT	"is eating"
+# define SLEEP	"is sleeping"
+# define THINK	"is thinking"
+
 /*
 **	ERRORS
 */
@@ -18,7 +23,7 @@ typedef enum e_errors {
 	GET_TIME_FAILED				= -3,
 }	t_errors;
 
-typedef struct timeval t_timeval;
+typedef struct timeval	t_timeval;
 
 typedef struct s_time {
 	int			time_to_die;
