@@ -2,8 +2,6 @@
 
 static int	is_input_correct(int argc, char **argv);
 static void	import_input_args(int argc, char **argv, t_data *data);
-static void	get_start_time(t_data *data);
-
 
 t_data	*init_data(int argc, char **argv)
 {
@@ -13,7 +11,13 @@ t_data	*init_data(int argc, char **argv)
 	if (!is_input_correct(argc, argv))
 		terminate_program(data, ILLEGAL_INPUT);
 	import_input_args(argc, argv, data);
-	get_start_time(data);
+	data->timings.start_time_ms = 0;
+	init_philo(data->philo);
+//	data->timings.start_time_ms = get_current_time(data);
+//	usleep(700);
+//	data->timings.current_time_ms = get_current_time(data);
+//	printf("%lld\n", data->timings.current_time_ms - data->timings.start_time_ms);
+
 	return (data);
 }
 
@@ -58,11 +62,21 @@ static void	import_input_args(int argc, char **argv, t_data *data)
 		data->must_eat = -1;
 }
 
-static void	get_start_time(t_data *data)
-{
-	t_timeval	time;
+/*
+**	The timeval struct (here typedefed as t_timeval) has:
+**	  - a value tv_sec which is the number of seconds since Jan. 1, 1970, and
+**	  - a tv_usec, which is the microseconds left from that calculation.
+**	Hence, get_current_time sums both before returning a long long value that is
+**	the number of milliseconds elapsed from that date.
+*/
 
-	if (gettimeofday(&time, NULL) == -1)
+long long	get_current_time(t_data *data)
+{
+	t_timeval	timeval;
+	long long	miliseconds;
+
+	if (gettimeofday(&timeval, NULL) == -1)
 		terminate_program(data, GET_TIME_FAILED);
-	data->timings.start_time = time;
+	miliseconds = timeval.tv_sec * MILLISECS_IN_A_SEC + timeval.tv_usec;
+	return (miliseconds);
 }

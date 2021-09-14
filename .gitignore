@@ -1,6 +1,7 @@
 #Clion stuff
 .idea
 cmake-build-debug
+objs
 
 # Prerequisites
 *.d
