@@ -12,39 +12,42 @@ long long	get_next_checkpoint(t_data *data)
 	int	status;
 	int	iter;
 
-	status = data->philo->status;
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
-		if (status == THINK)
+		status = data->philo[iter].status;
+		if (data->philo[iter].next_status_change == data->timings.current_time_ms)
 		{
-			check last_finished_eating timeval and add the time_to_eat
-			set philo[i].next_checkpoint to that timeframe
-			set_flag ready_to_eat
-			check if forks available so that he can start eating
-			when takes fork, set philo[i].next_checkpoint to that timeframe
+			if (status == THINK)
+			{
+				check last_finished_eating timeval and add the time_to_eat
+				set philo[i].next_checkpoint to that timeframe
+				set_flag ready_to_eat
+				check if forks available so that he can start eating
+				when takes fork, set philo[i].next_checkpoint to that timeframe
 
-		}
-		else if (status == FORK)
-		{
-			check if there is a second fork to pick up
+			}
+			else if (status == FORK)
+			{
+				check if there is a second fork to pick up
 
-		}
-		else if (status == EAT)
-		{
-			check how much time left to finish eating
-			set philo[i].next_checkpoint to that timeframe
-		}
-		else
-		{
-			check last_finished_eating timeval and add the time_to_eat
-			set philo[i].next_checkpoint to that timeframe
-			check how much time left to finish sleeping. If < than the above set:
-			set philo[i].next_checkpoint to that timeframe
-		}
-		data->philo->next_status_change =
+			}
+			else if (status == EAT)
+			{
+				check how much time left to finish eating
+				set philo[i].next_checkpoint to that timeframe
+			}
+			else
+			{
+				check last_finished_eating timeval and add the time_to_eat
+				set philo[i].next_checkpoint to that timeframe
+				check how much time left to finish sleeping. If < than the above set:
+				set philo[i].next_checkpoint to that timeframe
+			}
+			data->philo->next_status_change =
 
-				check_each_philo_dying_timeframe_if_starving how much time left to die
+					check_each_philo_dying_timeframe_if_starving how much time left to die
+		};
 	}
 }
 
