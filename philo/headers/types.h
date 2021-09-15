@@ -8,6 +8,7 @@
 **	the program.
 */
 
+# define DEAD	-1
 # define THINK	0
 # define FORK	1
 # define EAT	2
@@ -32,12 +33,10 @@ typedef struct s_time {
 	int			time_to_sleep;
 	long long	start_time_ms;
 	long long	current_time_ms;
-	long long	next_checkpoint_ms;
 }	t_timings;
 
 typedef struct s_philo {
 	int			id;
-	bool		dead;
 	int			meal_count;
 	long long	last_meal_end;
 	long long	next_status_change;

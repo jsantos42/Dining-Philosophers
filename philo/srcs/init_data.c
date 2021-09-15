@@ -33,7 +33,7 @@ t_philo	*init_philo(t_data *data)
 	while (++iter < data->nb_philo)
 	{
 		philo[iter].id = iter + 1;
-		philo[iter].dead = false;
+		philo[iter].alive = true;
 		philo[iter].last_meal_end = 0;
 		philo[iter].meal_count = 0;
 		philo[iter].next_status_change = 0;

@@ -9,7 +9,9 @@
 # include "types.h"
 # include "terminate_program.h"
 # include "init_data.h"
-# include "print_philo_status.h"
+# include "printer.h"
+# include "printer_utils.h"
+# include "run_simulation.h"
 # include "utils.h"
 
 
