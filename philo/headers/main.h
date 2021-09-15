@@ -9,6 +9,7 @@
 # include "types.h"
 # include "terminate_program.h"
 # include "init_data.h"
+# include "init_data_utils.h"
 # include "printer.h"
 # include "printer_utils.h"
 # include "run_simulation.h"

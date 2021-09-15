@@ -24,41 +24,22 @@ int	is_in_range_long(long value, long min, long max)
 	return (value >= min && value <= max);
 }
 
-int	is_positive_int(char *str)
-{
-	long	temp;
 
-	temp = 0;
-	while (*str != '\0')
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		temp *= 10;
-		temp += *str++ - '0';
-		if (!is_in_range_long(temp, -2147483648, 2147483647))
-			return (0);
-	}
-	return (1);
-}
+/*
+**	The timeval struct (here typedefed as t_timeval) has:
+**	  - a value tv_sec which is the number of seconds since Jan. 1, 1970, and
+**	  - a tv_usec, which is the microseconds left from that calculation.
+**	Hence, get_current_time sums both before returning a long long value that is
+**	the number of milliseconds elapsed from that date.
+*/
 
-int	import_int(char *str)
-{
-	long	temp;
-	int		sign;
-	int 	output;
-
-	temp = 0;
-	sign = 1;
-	if (*str == '-')
-	{
-		sign *= -1;
-		str++;
-	}
-	while (*str != '\0')
-	{
-		temp *= 10;
-		temp += *str++ - '0';
-	}
-	output = (int)temp * sign;
-	return (output);
-}
+//long long	get_current_time(t_data *data)
+//{
+//	t_timeval	timeval;
+//	long long	miliseconds;
+//
+//	if (gettimeofday(&timeval, NULL) == -1)
+//		terminate_program(data, GET_TIME_FAILED);
+//	miliseconds = timeval.tv_sec * MILLISECS_IN_A_SEC + timeval.tv_usec;
+//	return (miliseconds);
+//}

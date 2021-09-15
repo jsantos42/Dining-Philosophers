@@ -31,7 +31,6 @@ typedef struct s_time {
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
-	long long	start_time_ms;
 	long long	current_time_ms;
 }	t_timings;
 
