@@ -3,6 +3,6 @@
 
 # include "main.h"
 
-void	print_philo_status(int time, int nb_philo, char *action);
+void	print_philo_status(t_data *data, int nb_philo);
 
 #endif

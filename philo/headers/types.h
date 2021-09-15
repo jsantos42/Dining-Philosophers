@@ -8,10 +8,10 @@
 **	the program.
 */
 
-# define FORK	"has taken a fork"
-# define EAT	"is eating"
-# define SLEEP	"is sleeping"
-# define THINK	"is thinking"
+# define THINK	0
+# define FORK	1
+# define EAT	2
+# define SLEEP	3
 # define MILLISECS_IN_A_SEC 1000
 
 /*
@@ -38,8 +38,10 @@ typedef struct s_time {
 typedef struct s_philo {
 	int			id;
 	bool		dead;
+	int			meal_count;
 	long long	last_meal_end;
 	long long	next_status_change;
+	int			status;
 }	t_philo;
 
 typedef struct s_data {

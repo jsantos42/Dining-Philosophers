@@ -1,5 +1,6 @@
 #include "../headers/init_data.h"
 
+t_philo	*init_philo(t_data *data);
 static int	is_input_correct(int argc, char **argv);
 static void	import_input_args(int argc, char **argv, t_data *data);
 
@@ -12,7 +13,7 @@ t_data	*init_data(int argc, char **argv)
 		terminate_program(data, ILLEGAL_INPUT);
 	import_input_args(argc, argv, data);
 	data->timings.start_time_ms = 0;
-	init_philo(data->philo);
+	data->philo = init_philo(data);
 //	data->timings.start_time_ms = get_current_time(data);
 //	usleep(700);
 //	data->timings.current_time_ms = get_current_time(data);
@@ -21,6 +22,26 @@ t_data	*init_data(int argc, char **argv)
 	return (data);
 }
 
+
+t_philo	*init_philo(t_data *data)
+{
+	int	iter;
+	t_philo	*philo;
+
+	iter = -1;
+	philo = malloc_or_terminate(data, sizeof(t_philo) * data->nb_philo);
+	while (++iter < data->nb_philo)
+	{
+		philo[iter].id = iter + 1;
+		philo[iter].dead = false;
+		philo[iter].last_meal_end = 0;
+		philo[iter].meal_count = 0;
+		philo[iter].next_status_change = 0;
+		philo[iter].status = THINK;
+	}
+	return (philo);
+
+}
 
 /*
 **	Checks if the program arguments are correct. They should be 4 or 5, and all
@@ -40,7 +61,7 @@ static int	is_input_correct(int argc, char **argv)
 	arg_iter = 0;
 	while (++arg_iter < argc)
 	{
-		if (!is_int(argv[arg_iter]))
+		if (!is_positive_int(argv[arg_iter]))
 			return (0);
 	}
 	return (1);
@@ -53,6 +74,8 @@ static int	is_input_correct(int argc, char **argv)
 static void	import_input_args(int argc, char **argv, t_data *data)
 {
 	data->nb_philo = import_int(argv[1]);
+	if (data->nb_philo == 0)
+		terminate_program(data, ILLEGAL_INPUT);
 	data->timings.time_to_die = import_int(argv[2]);
 	data->timings.time_to_eat = import_int(argv[3]);
 	data->timings.time_to_sleep = import_int(argv[4]);

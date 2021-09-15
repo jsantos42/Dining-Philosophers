@@ -26,6 +26,7 @@ void	print_error_message(int error)
 		printf("Wrong input. Please run:\n");
 		printf("./philo <number_of_philosophers> <time_to_die> <time_to_eat> ");
 		printf("<time_to_sleep> [number_of_times_each_philosopher_must_eat]\n");
+		printf("Note that the number of philosophers should be at least 1.\n");
 	}
 	else if (error == MALLOC_FAILED)
 		printf("Memory allocation failed.\n");

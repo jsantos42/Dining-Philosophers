@@ -29,7 +29,8 @@ int	main(int argc, char **argv)
 		check if forks available so that he can start eating
 		when takes fork, set philo[i].next_checkpoint to that timeframe
 	 */
-	print_philo_status(500, 3, SLEEP);
+	data->timings.current_time_ms = 0;
+	print_philo_status(data, 2);
 	free(data);
 	return (0);
 }
