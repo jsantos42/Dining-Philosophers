@@ -1,4 +1,4 @@
-#include "../headers/run_simulation_utils.h"
+#include "../headers/threads_utils.h"
 
 /*
 **	Checks whether any philosopher is dead.

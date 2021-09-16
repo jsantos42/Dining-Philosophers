@@ -1,5 +1,5 @@
-#ifndef RUN_SIMULATION_UTILS_H
-#define RUN_SIMULATION_UTILS_H
+#ifndef THREADS_UTILS_H
+# define THREADS_UTILS_H
 
 # include "main.h"
 

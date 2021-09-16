@@ -1,14 +1,38 @@
-#include "../headers/run_simulation.h"
+#include "../headers/threads.h"
 
 /*
-**	Runs the simulation until either a philosopher is dead or all the
-**	philosophers had enough meals.
-**	In each instance, it calculates the next timeframe in which there should be
-**	a status change of at least 1 philosopher.
+**	Starts a thread for each philosopher, each executing the run_thread function
+**	with philo as its only argument.
 */
 
-void	run_simulation(t_data *data)
+void	start_threads(t_data *data)
 {
+	int			iter;
+	pthread_t	*thread;
+	t_philo		*philo;
+
+	iter = -1;
+	while (++iter < data->nb_philo)
+	{
+		thread = &data->philo_thread[iter];
+		philo = &data->philo[iter];
+		if (pthread_create(thread, NULL, run_thread, philo))
+			terminate_program(data, THREAD_CREATION_FAILED);
+	}
+}
+
+/*
+//**	Runs the simulation until either a philosopher is dead or all the
+//**	philosophers had enough meals.
+//**	In each instance, it calculates the next timeframe in which there should be
+//**	a status change of at least 1 philosopher.
+*/
+
+void	*run_thread(void *philo_cast_to_void)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_cast_to_void;
 	while (is_everybody_alive(data) && is_anybody_missing_a_meal(data))
 		data->timings.current_time_ms = get_next_checkpoint(data);
 }
