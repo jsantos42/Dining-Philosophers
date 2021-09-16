@@ -1,57 +1,85 @@
 #include "../headers/run_simulation.h"
 
+void	update_status(t_data *data, int philo_index, int new_status);
+
 void	run_simulation(t_data *data)
 {
 	while (!is_everybody_alive(data))
 		data->timings.current_time_ms = get_next_checkpoint(data);
-	find_dead_philo_and_print(data);
+//	find_dead_philo_and_print(data);
 }
 
 long long	get_next_checkpoint(t_data *data)
 {
-	int	status;
-	int	iter;
+	int			iter;
+	long long	current_time;
+	long long	next_checkpoint;
+	int			status;
+	long long	*next_status_change;
 
 	iter = -1;
+	current_time = data->timings.current_time_ms;
+	next_checkpoint = 0;
 	while (++iter < data->nb_philo)
 	{
+		next_status_change = &data->philo[iter].next_status_change;
 		status = data->philo[iter].status;
-		if (data->philo[iter].next_status_change == data->timings.current_time_ms)
+		if (current_time == *next_status_change)
 		{
-			if (status == THINK)
+			if (current_time == data->philo[iter].last_meal_end + data->timings.time_to_eat)
 			{
-				check last_finished_eating timeval and add the time_to_eat
-				set philo[i].next_checkpoint to that timeframe
-				set_flag ready_to_eat
-				check if forks available so that he can start eating
-				when takes fork, set philo[i].next_checkpoint to that timeframe
-
+				update_status(data, iter, DEAD);
+				break ;
+			}
+			if (status == THINK || status == SLEEP)
+			{
+				if (is_fork_available)
+				{
+					take_fork(data);
+					update_status(data, iter, FORK);
+					*next_status_change = check_when_forks_will_be_available_next(data);
+				}
+				else
+					update_status(data, iter, THINK);
 			}
 			else if (status == FORK)
 			{
-				check if there is a second fork to pick up
+				if (is_fork_available)
+				{
+					take_fork(data);
+					update_status(data, iter, EAT);
+					*next_status_change = current_time + data->timings.time_to_eat;
+				}
 
 			}
 			else if (status == EAT)
 			{
-				check how much time left to finish eating
-				set philo[i].next_checkpoint to that timeframe
+				data->philo[iter].last_meal_end = current_time;
+				update_status(data, iter, SLEEP);
+				*next_status_change = current_time + data->timings.time_to_sleep;
 			}
-			else
-			{
-				check last_finished_eating timeval and add the time_to_eat
-				set philo[i].next_checkpoint to that timeframe
-				check how much time left to finish sleeping. If < than the above set:
-				set philo[i].next_checkpoint to that timeframe
-			}
-			data->philo->next_status_change =
-
-					check_each_philo_dying_timeframe_if_starving how much time left to die
+			if (*next_status_change > data->philo->last_meal_end + data->timings.time_to_eat)
+				*next_status_change = data->philo->last_meal_end + data->timings.time_to_eat;
+			if (!next_checkpoint || next_checkpoint > *next_status_change)
+				next_checkpoint = *next_status_change;
 		};
 	}
+	return (next_checkpoint);
 }
 
 
+
+void	update_status(t_data *data, int philo_index, int new_status)
+{
+	int	*current_status;
+
+	current_status = &data->philo[philo_index].status;
+	if (*current_status != new_status)
+	{
+		*current_status = new_status;
+		print_philo_status(data, philo_index);
+	}
+}
 
 int	is_everybody_alive(t_data *data)
 {

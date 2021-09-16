@@ -22,17 +22,17 @@ void	print_philo_status(t_data *data, int philo_index)
 	free(update);
 }
 
-void	find_dead_philo_and_print(t_data *data)
-{
-	int	iter;
-
-	iter = -1;
-	while (++iter < data->nb_philo)
-	{
-		if (data->philo->status == DEAD)
-		{
-			print_philo_status(data, iter);
-			break;
-		}
-	}
-}
+//void	find_dead_philo_and_print(t_data *data)
+//{
+//	int	iter;
+//
+//	iter = -1;
+//	while (++iter < data->nb_philo)
+//	{
+//		if (data->philo->status == DEAD)
+//		{
+//			print_philo_status(data, iter);
+//			break;
+//		}
+//	}
+//}
