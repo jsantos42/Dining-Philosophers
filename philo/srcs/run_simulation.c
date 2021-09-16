@@ -1,13 +1,22 @@
 #include "../headers/run_simulation.h"
 
-void	update_status(t_data *data, int philo_index, int new_status);
+/*
+**	Runs the simulation until either a philosopher is dead or all the
+**	philosophers had enough meals.
+**	In each instance, it calculates the next timeframe in which there should be
+**	a status change of at least 1 philosopher.
+*/
 
 void	run_simulation(t_data *data)
 {
-	while (!is_everybody_alive(data))
+	while (is_everybody_alive(data) && is_anybody_missing_a_meal(data))
 		data->timings.current_time_ms = get_next_checkpoint(data);
-//	find_dead_philo_and_print(data);
 }
+
+/*
+**	Gets the next timeframe in which there should be a status change of at least
+**	1 philosopher.
+*/
 
 long long	get_next_checkpoint(t_data *data)
 {
@@ -65,31 +74,4 @@ long long	get_next_checkpoint(t_data *data)
 		};
 	}
 	return (next_checkpoint);
-}
-
-
-
-void	update_status(t_data *data, int philo_index, int new_status)
-{
-	int	*current_status;
-
-	current_status = &data->philo[philo_index].status;
-	if (*current_status != new_status)
-	{
-		*current_status = new_status;
-		print_philo_status(data, philo_index);
-	}
-}
-
-int	is_everybody_alive(t_data *data)
-{
-	int	iter;
-
-	iter = -1;
-	while (++iter < data->nb_philo)
-	{
-		if (data->philo->status == DEAD)
-			return (0);
-	}
-	return (1);
 }

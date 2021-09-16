@@ -7,7 +7,7 @@ int	main(int argc, char **argv)
 	data = init_data(argc, argv);
 //	start_threads
 	run_simulation(data);
-	print_philo_status(data, 2);
+//	print_philo_status(data, 2);
 	free(data);
 	return (0);
 }
