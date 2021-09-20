@@ -1,13 +1,13 @@
 #include "../headers/printer.h"
 
-void	print_philo_status(t_data *data, int philo_index)
+void	print_philo_status(t_philo *philo)
 {
 	long long	time;
 	int			status;
 	char		*update;
 
-	time = data->timings.current_time_ms;
-	status = data->philo[philo_index].status;
+	time = philo->timings.current_time_ms;
+	status = philo->status;
 	if (status == THINK)
 		update = ft_strdup("is thinking");
 	else if (status == FORK)
@@ -18,7 +18,7 @@ void	print_philo_status(t_data *data, int philo_index)
 		update = ft_strdup("is sleeping");
 	else
 		update = ft_strdup("just died");
-	printf("%4lldms	%2d %s.\n", time, philo_index + 1, update);
+	printf("%4lldms	%2d %s.\n", time, philo->id, update);
 	free(update);
 }
 

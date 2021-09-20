@@ -33,8 +33,8 @@ void	*run_thread(void *philo_cast_to_void)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_cast_to_void;
-	while (is_everybody_alive(data) && is_anybody_missing_a_meal(data))
-		data->timings.current_time_ms = get_next_checkpoint(data);
+	while (is_not_dead(philo) && is_missing_a_meal(philo))
+		philo->timings.current_time_ms = get_next_checkpoint(philo);
 }
 
 /*
@@ -42,60 +42,55 @@ void	*run_thread(void *philo_cast_to_void)
 **	1 philosopher.
 */
 
-long long	get_next_checkpoint(t_data *data)
+long long	get_next_checkpoint(t_philo *philo)
 {
-	int			iter;
 	long long	current_time;
 	long long	next_checkpoint;
 	int			status;
 	long long	*next_status_change;
 
-	iter = -1;
-	current_time = data->timings.current_time_ms;
+	current_time = philo->timings.current_time_ms;
 	next_checkpoint = 0;
-	while (++iter < data->nb_philo)
+	next_status_change = &philo->next_status_change;
+	status = philo->status;
+	if (current_time == *next_status_change)
 	{
-		next_status_change = &data->philo[iter].next_status_change;
-		status = data->philo[iter].status;
-		if (current_time == *next_status_change)
+		if (current_time == philo->last_meal_end + philo->timings.time_to_eat)
 		{
-			if (current_time == data->philo[iter].last_meal_end + data->timings.time_to_eat)
+			update_status(philo, DEAD);
+			return (next_checkpoint);
+		}
+		if (status == THINK || status == SLEEP)
+		{
+			if (is_fork_available)
 			{
-				update_status(data, iter, DEAD);
-				break ;
+				take_fork(philo);
+				update_status(philo, FORK);
+				*next_status_change = check_when_forks_will_be_available_next(philo);
 			}
-			if (status == THINK || status == SLEEP)
+			else
+				update_status(philo, THINK);
+		}
+		else if (status == FORK)
+		{
+			if (is_fork_available)
 			{
-				if (is_fork_available)
-				{
-					take_fork(data);
-					update_status(data, iter, FORK);
-					*next_status_change = check_when_forks_will_be_available_next(data);
-				}
-				else
-					update_status(data, iter, THINK);
+				take_fork(philo);
+				update_status(philo, EAT);
+				*next_status_change = current_time + philo->timings.time_to_eat;
 			}
-			else if (status == FORK)
-			{
-				if (is_fork_available)
-				{
-					take_fork(data);
-					update_status(data, iter, EAT);
-					*next_status_change = current_time + data->timings.time_to_eat;
-				}
 
-			}
-			else if (status == EAT)
-			{
-				data->philo[iter].last_meal_end = current_time;
-				update_status(data, iter, SLEEP);
-				*next_status_change = current_time + data->timings.time_to_sleep;
-			}
-			if (*next_status_change > data->philo->last_meal_end + data->timings.time_to_eat)
-				*next_status_change = data->philo->last_meal_end + data->timings.time_to_eat;
-			if (!next_checkpoint || next_checkpoint > *next_status_change)
-				next_checkpoint = *next_status_change;
-		};
-	}
+		}
+		else if (status == EAT)
+		{
+			philo->last_meal_end = current_time;
+			update_status(philo, SLEEP);
+			*next_status_change = current_time + philo->timings.time_to_sleep;
+		}
+		if (*next_status_change > philo->last_meal_end + philo->timings.time_to_eat)
+			*next_status_change = philo->last_meal_end + philo->timings.time_to_eat;
+		if (!next_checkpoint || next_checkpoint > *next_status_change)
+			next_checkpoint = *next_status_change;
+	};
 	return (next_checkpoint);
 }

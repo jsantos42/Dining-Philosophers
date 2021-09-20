@@ -37,16 +37,16 @@ typedef struct s_time {
 
 typedef struct s_philo {
 	int			id;
+	int			status;
+	long long	next_status_change;
+	t_timings	timings;
+	int			must_eat;
 	int			meal_count;
 	long long	last_meal_end;
-	long long	next_status_change;
-	int			status;
 }	t_philo;
 
 typedef struct s_data {
 	int			nb_philo;
-	t_timings	timings;
-	int			must_eat;
 	t_philo		*philo;
 	pthread_t	*philo_thread;
 }	t_data;

@@ -3,8 +3,8 @@
 
 # include "main.h"
 
-int			is_everybody_alive(t_data *data);
-int			is_anybody_missing_a_meal(t_data *data);
-void		update_status(t_data *data, int index, int new_status);
+int		is_not_dead(t_philo *philo);
+int		is_missing_a_meal(t_philo *philo);
+void	update_status(t_philo *philo, int new_status);
 
 #endif

@@ -1,40 +1,28 @@
 #include "../headers/threads_utils.h"
 
 /*
-**	Checks whether any philosopher is dead.
+**	Checks whether the given philosopher is dead.
 */
 
-int	is_everybody_alive(t_data *data)
+int	is_not_dead(t_philo *philo)
 {
-	int	iter;
-
-	iter = -1;
-	while (++iter < data->nb_philo)
-	{
-		if (data->philo[iter].status == DEAD)
-			return (0);
-	}
-	return (1);
+	if (philo->status != DEAD)
+		return (1);
+	else
+		return (0);
 }
 
 /*
 **	If the must_eat optional argument was given to the program, checks whether
-**	all the philosophers had enough meals already.
+**	the given philosopher had enough meals already.
 */
 
-int	is_anybody_missing_a_meal(t_data *data)
+int	is_missing_a_meal(t_philo *philo)
 {
-	int	iter;
-
-	if (data->must_eat == -1)
+	if (philo->must_eat == -1 || philo->meal_count < philo->must_eat)
 		return (1);
-	iter = -1;
-	while (++iter < data->nb_philo)
-	{
-		if (data->philo[iter].meal_count < data->must_eat)
-			return (1);
-	}
-	return (0);
+	else
+		return (0);
 }
 
 /*
@@ -42,11 +30,11 @@ int	is_anybody_missing_a_meal(t_data *data)
 **	and, if so, prints the status update to the terminal.
 */
 
-void	update_status(t_data *data, int index, int new_status)
+void	update_status(t_philo *philo, int new_status)
 {
-	if (data->philo[index].status != new_status)
+	if (philo->status != new_status)
 	{
-		data->philo[index].status = new_status;
-		print_philo_status(data, index);
+		philo->status = new_status;
+		print_philo_status(philo);
 	}
 }
