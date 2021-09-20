@@ -9,7 +9,6 @@ t_data	*init_data(int argc, char **argv)
 	if (!is_input_correct(argc, argv))
 		terminate_program(data, ILLEGAL_INPUT);
 	import_input_args(argc, argv, data);
-	data->timings.current_time_ms = 0;
 	data->philo = init_philo(data);
 	return (data);
 }
@@ -25,10 +24,11 @@ t_philo	*init_philo(t_data *data)
 	while (++iter < data->nb_philo)
 	{
 		philo[iter].id = iter + 1;
+		philo[iter].status = THINK;
+		philo[iter].next_status_change = 0;
+		philo[iter].timings.current_time_ms = 0;
 		philo[iter].last_meal_end = 0;
 		philo[iter].meal_count = 0;
-		philo[iter].next_status_change = 0;
-		philo[iter].status = THINK;
 	}
 	return (philo);
 
