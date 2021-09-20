@@ -8,22 +8,28 @@ int	init_data(int argc, char **argv, t_data *data)
 	if (!import_input_args(argc, argv, &input_args))
 		return (print_error_message(ILLEGAL_INPUT));
 	data->nb_philo = input_args[NB_PHILO];
-	data->philo = init_philo(data, input_args);
-	if (!data->philo)
-		return (print_error_message(MALLOC_FAILED));
+	data->philos = init_philos(data, input_args);
+	if (!data->philos)
+		return (-1);
+	data->forks = init_forks(data);
+	if (!data->forks)
+		return (-1);
+	//printer_mutex??
 	return (1);
 }
 
 
-t_philo	*init_philo(t_data *data, int *input_args)
+t_philo	*init_philos(t_data *data, int *input_args)
 {
 	int	iter;
 	t_philo	*philo;
 
-	philo = NULL;
 	philo = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!philo)
-		return (philo);
+	{
+		print_error_message(MALLOC_FAILED);
+		return (NULL);
+	}
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
@@ -40,4 +46,37 @@ t_philo	*init_philo(t_data *data, int *input_args)
 	}
 	free(input_args);
 	return (philo);
+}
+
+/*
+**	Initializes the forks variable. Note that, according to the subject, there
+**	should be as many forks on the table as there are philosophers. Forks must
+**	not be taken by multiple threads at the same time, so this function applies
+**	a mutex on them.
+*/
+
+pthread_mutex_t	*init_forks(t_data *data)
+{
+	pthread_mutex_t *forks;
+	int 			iter;
+
+	forks = malloc(data->nb_philo * sizeof(pthread_mutex_t));
+	if (!forks)
+	{
+		free(data->philos);
+		print_error_message(MALLOC_FAILED);
+		return (NULL);
+	}
+	iter = -1;
+	while (++iter < data->nb_philo)
+	{
+		if (pthread_mutex_init(&forks[iter], NULL) != 0)
+		{
+			free(data->philos);
+			free(forks);
+			print_error_message(MUTEX_FAILED);
+			return (NULL);
+		}
+	}
+	return (forks);
 }

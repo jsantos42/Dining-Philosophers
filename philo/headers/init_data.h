@@ -9,7 +9,8 @@
 # define TIME_TO_SLEEP	3
 # define MUST_EAT		4
 
-int	init_data(int argc, char **argv, t_data *data);
-t_philo	*init_philo(t_data *data, int *input_args);
+int				init_data(int argc, char **argv, t_data *data);
+t_philo			*init_philos(t_data *data, int *input_args);
+pthread_mutex_t	*init_forks(t_data *data);
 
 #endif
