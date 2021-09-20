@@ -1,7 +1,6 @@
 #include "../headers/init_data_utils.h"
 
 static int	is_positive_int(char *str);
-static int	import_int(char *str);
 
 /*
 **	Checks if the program arguments are correct. They should be 4 or 5, and all
@@ -45,25 +44,25 @@ static int	is_positive_int(char *str)
 }
 
 /*
-**	Imports the program arguments (which should all be ints) to the struct.
+**	Imports the program arguments (which should all be ints) to a temporary
+**	array. In case the optional argument was not provided (meaning, argc is 5
+**	instead of 6), sets the last argument as -1.
 */
 
-void	import_input_args(int argc, char **argv, t_data *data)
+int	*import_input_args(int argc, char **argv, t_data *data)
 {
-	data->nb_philo = import_int(argv[1]);
-	if (data->nb_philo == 0)
-		terminate_program(data, ILLEGAL_INPUT);
-	data->timings.time_to_die = import_int(argv[2]);
-	data->timings.time_to_eat = import_int(argv[3]);
-	data->timings.time_to_sleep = import_int(argv[4]);
-	if (argc == 6)
-		data->must_eat = import_int(argv[5]);
-	else
-		data->must_eat = -1;
+	int	*input_args;
+	int	iter;
+
+	input_args = malloc_or_terminate(data, 4);
+	iter = -1;
+	while (++iter < argc)
+		input_args[iter] = import_int(argv[iter + 1]);
+	if (argc == 5)
+		input_args[iter] = -1;
 }
 
-
-static int	import_int(char *str)
+int	import_int(char *str)
 {
 	long	temp;
 	int		sign;
