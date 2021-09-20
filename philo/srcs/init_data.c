@@ -1,24 +1,17 @@
 #include "../headers/init_data.h"
 
 
-t_data	*init_data(int argc, char **argv)
+int	init_data(int argc, char **argv, t_data *data)
 {
-	t_data	*data;
 	int		*input_args;
 
-	data = malloc_or_terminate(NULL, sizeof(t_data));
-	if (!is_input_correct(argc, argv))
-		terminate_program(data, ILLEGAL_INPUT);
-	input_args = import_input_args(argc, argv);
+	if (!import_input_args(argc, argv, &input_args))
+		return (print_error_message(ILLEGAL_INPUT));
 	data->nb_philo = input_args[NB_PHILO];
-	if (data->nb_philo == 0)
-	{
-		free(input_args);
-		terminate_program(data, ILLEGAL_INPUT);
-	}
 	data->philo = init_philo(data, input_args);
-	free(input_args);
-	return (data);
+	if (!data->philo)
+		return (print_error_message(MALLOC_FAILED));
+	return (1);
 }
 
 
@@ -27,7 +20,10 @@ t_philo	*init_philo(t_data *data, int *input_args)
 	int	iter;
 	t_philo	*philo;
 
-	philo = malloc_or_terminate(data, sizeof(t_philo) * data->nb_philo);
+	philo = NULL;
+	philo = malloc(sizeof(t_philo) * data->nb_philo);
+	if (!philo)
+		return (philo);
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
@@ -42,7 +38,6 @@ t_philo	*init_philo(t_data *data, int *input_args)
 		philo[iter].last_meal_end = 0;
 		philo[iter].meal_count = 0;
 	}
+	free(input_args);
 	return (philo);
 }
-
-

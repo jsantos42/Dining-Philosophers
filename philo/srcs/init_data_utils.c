@@ -3,8 +3,30 @@
 static int	is_positive_int(char *str);
 
 /*
+**	Imports the program arguments (which should all be ints) to a temporary
+**	array. In case the optional argument was not provided (meaning, argc is 5
+**	instead of 6), sets the last argument as -1.
+*/
+
+int	import_input_args(int argc, char **argv, int **input_args)
+{
+	int	iter;
+
+	if (!is_input_correct(argc, argv))
+		return (0);
+	*input_args = malloc_or_terminate(NULL, 5);
+	iter = -1;
+	while (++iter < argc)
+		(*input_args)[iter] = import_int(argv[iter + 1]);
+	if (argc == 5)
+		(*input_args)[iter] = -1;
+	return (1);
+}
+
+/*
 **	Checks if the program arguments are correct. They should be 4 or 5, and all
-**	of them should be ints.
+**	of them should be positive ints. Plus, the number of philosophers (argv[1])
+**	should not be 0.
 **	Note1: the argc variable also headers the program name in its count, hence
 **	testing if it's between 5 and 6.
 **	Note2: the first argument is the program name, hence the arg_iter must start
@@ -21,6 +43,8 @@ int	is_input_correct(int argc, char **argv)
 	while (++arg_iter < argc)
 	{
 		if (!is_positive_int(argv[arg_iter]))
+			return (0);
+		if (arg_iter == 1 && import_int(argv[arg_iter]) == 0)
 			return (0);
 	}
 	return (1);
@@ -43,24 +67,6 @@ static int	is_positive_int(char *str)
 	return (1);
 }
 
-/*
-**	Imports the program arguments (which should all be ints) to a temporary
-**	array. In case the optional argument was not provided (meaning, argc is 5
-**	instead of 6), sets the last argument as -1.
-*/
-
-int	*import_input_args(int argc, char **argv, t_data *data)
-{
-	int	*input_args;
-	int	iter;
-
-	input_args = malloc_or_terminate(data, 4);
-	iter = -1;
-	while (++iter < argc)
-		input_args[iter] = import_int(argv[iter + 1]);
-	if (argc == 5)
-		input_args[iter] = -1;
-}
 
 int	import_int(char *str)
 {

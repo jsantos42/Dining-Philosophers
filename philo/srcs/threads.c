@@ -5,7 +5,7 @@
 **	with philo as its only argument.
 */
 
-void	start_threads(t_data *data)
+int	start_threads(t_data *data)
 {
 	int			iter;
 	pthread_t	*thread;
@@ -17,15 +17,16 @@ void	start_threads(t_data *data)
 		thread = &data->philo_thread[iter];
 		philo = &data->philo[iter];
 		if (pthread_create(thread, NULL, run_thread, philo))
-			terminate_program(data, THREAD_CREATION_FAILED);
+			return (print_error_message(THREAD_CREATION_FAILED));
 	}
+	return (1);
 }
 
 /*
-//**	Runs the simulation until either a philosopher is dead or all the
-//**	philosophers had enough meals.
-//**	In each instance, it calculates the next timeframe in which there should be
-//**	a status change of at least 1 philosopher.
+**	This is the function that each thread runs when starting. Runs until the
+**	given philosopher is dead or has had enough meals.
+**	In each instance, it calculates the next timeframe in which there should be
+**	a status change its philosopher.
 */
 
 void	*run_thread(void *philo_cast_to_void)

@@ -4,6 +4,6 @@
 # include "main.h"
 
 void	print_philo_status(t_philo *philo);
-//void	find_dead_philo_and_print(t_data *data);
+int		print_error_message(int error);
 
 #endif
