@@ -15,9 +15,11 @@ int	start_threads(t_data *data)
 	while (++iter < data->nb_philo)
 	{
 		thread = &data->philo_thread[iter];
-		philo = &data->philo[iter];
-		if (pthread_create(thread, NULL, run_thread, philo))
+		philo = &data->philos[iter];
+		if (pthread_create(thread, NULL, run_thread, philo) != 0)
 			return (print_error_message(THREAD_CREATION_FAILED));
+		if (pthread_join(*thread, NULL) != 0)
+			return (print_error_message(THREAD_JOINING_FAILED));
 	}
 	return (1);
 }

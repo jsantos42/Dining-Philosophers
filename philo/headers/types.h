@@ -23,8 +23,9 @@ typedef enum e_errors {
 	ILLEGAL_INPUT				= -1,
 	MALLOC_FAILED				= -2,
 	THREAD_CREATION_FAILED		= -3,
-	MUTEX_FAILED				= -4,
-	GET_TIME_FAILED				= -5,
+	THREAD_JOINING_FAILED		= -4,
+	MUTEX_FAILED				= -5,
+	GET_TIME_FAILED				= -6,
 }	t_errors;
 
 typedef struct timeval	t_timeval;

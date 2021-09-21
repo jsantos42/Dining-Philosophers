@@ -26,15 +26,30 @@ int	is_missing_a_meal(t_philo *philo)
 }
 
 /*
-**	Checks whether the status of the philosopher of index 'index' needs updating
-**	and, if so, prints the status update to the terminal.
+**	Starts by checking whether any philosopher has already been killed; it does
+**	so through a static variable, since this function is used by every thread.
+**	If any philosopher is already dead, then the program should terminate and
+**	print nothing else.
+**	On the other hand, if all philosophers are still alive, this function prints
+**	the new status update (in case it differs from the previous one) and, if the
+**	new status is DEAD, then it changes the static variable, so that every
+**	thread will eventually exit.
 */
 
 void	update_status(t_philo *philo, int new_status)
 {
-	if (philo->status != new_status)
+	static	bool	all_alive = true;
+
+	if (!all_alive)
+		philo->status = DEAD;
+	else
 	{
-		philo->status = new_status;
-		print_philo_status(philo);
+		if (philo->status != new_status)
+		{
+			philo->status = new_status;
+			print_philo_status(philo);
+		}
+		if (new_status == DEAD)
+			all_alive = false;
 	}
 }

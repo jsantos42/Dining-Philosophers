@@ -2,11 +2,9 @@
 
 void	print_philo_status(t_philo *philo)
 {
-	long long	time;
-	int			status;
-	char		*update;
+	int				status;
+	char			*update;
 
-	time = philo->timings.current_time_ms;
 	status = philo->status;
 	if (status == THINK)
 		update = ft_strdup("is thinking");
@@ -18,7 +16,7 @@ void	print_philo_status(t_philo *philo)
 		update = ft_strdup("is sleeping");
 	else
 		update = ft_strdup("just died");
-	printf("%4lldms	%2d %s.\n", time, philo->id, update);
+	printf("%4lldms	%2d %s.\n", philo->timings.current_time_ms, philo->id, update);
 	free(update);
 }
 
