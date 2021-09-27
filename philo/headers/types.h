@@ -8,11 +8,12 @@
 **	the program.
 */
 
-# define DEAD	-1
-# define THINK	0
-# define FORK	1
-# define EAT	2
-# define SLEEP	3
+# define DEAD			-1
+# define THINK			0
+# define FIRST_FORK		1
+# define SECOND_FORK	2
+# define EAT			3
+# define SLEEP			4
 # define MILLISECS_IN_A_SEC 1000
 
 /*
@@ -34,6 +35,7 @@ typedef struct s_time {
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
+	long long	start_time_ms;
 	long long	current_time_ms;
 }	t_timings;
 
@@ -45,13 +47,13 @@ typedef struct s_philo {
 	int				must_eat;
 	int				meal_count;
 	long long		last_meal_end;
+	pthread_t		thread;
 	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data {
 	int				nb_philo;
 	t_philo			*philos;
-	pthread_t		*philo_thread;
 	pthread_mutex_t	*forks;
 }	t_data;
 #endif

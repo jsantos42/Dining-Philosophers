@@ -36,16 +36,17 @@ t_philo	*init_philos(t_data *data, int *input_args)
 		philos[iter].index = iter;
 		philos[iter].status = THINK;
 		philos[iter].next_status_change = 0;
-		philos[iter].timings.current_time_ms = 0;
+		philos[iter].timings.start_time_ms = get_current_time();
+		philos[iter].timings.current_time_ms = philos[iter].timings.start_time_ms;
 		philos[iter].timings.time_to_die = input_args[TIME_TO_DIE];
 		philos[iter].timings.time_to_eat = input_args[TIME_TO_EAT];
 		philos[iter].timings.time_to_sleep = input_args[TIME_TO_SLEEP];
 		philos[iter].must_eat = input_args[MUST_EAT];
-		philos[iter].last_meal_end = 0;
+		philos[iter].last_meal_end = philos[iter].timings.start_time_ms;
 		philos[iter].meal_count = 0;
 		philos[iter].data = data;
 	}
-	free(input_args);
+//	free(input_args);
 	return (philos);
 }
 

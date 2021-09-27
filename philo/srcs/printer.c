@@ -8,15 +8,20 @@ void	print_philo_status(t_philo *philo)
 	status = philo->status;
 	if (status == THINK)
 		update = ft_strdup("is thinking");
-	else if (status == FORK)
+	else if (status == FIRST_FORK)
 		update = ft_strdup("has taken a fork");
+	else if (status == SECOND_FORK)
+		update = ft_strdup("has taken another fork");
 	else if (status == EAT)
 		update = ft_strdup("is eating");
 	else if (status == SLEEP)
 		update = ft_strdup("is sleeping");
 	else
-		update = ft_strdup("just died");
-	printf("%4lldms	%2d %s.\n", philo->timings.current_time_ms, philo->index + 1, update);
+	{
+		update = ft_strdup("\x1B[31mjust died");
+		philo->timings.current_time_ms = philo->last_meal_end + philo->timings.time_to_die;
+	}
+	printf("%6lld ms	%2d %s.\n", philo->timings.current_time_ms - philo->timings.start_time_ms, philo->index + 1, update);
 	free(update);
 }
 

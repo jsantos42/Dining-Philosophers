@@ -40,6 +40,7 @@ void	update_status(t_philo *philo, int new_status)
 {
 	static	bool	all_alive = true;
 
+	philo->timings.current_time_ms = get_current_time();
 	if (!all_alive)
 	{
 		philo->status = DEAD;
@@ -47,26 +48,10 @@ void	update_status(t_philo *philo, int new_status)
 	}
 	else
 	{
-		if (philo->status != new_status)
-		{
-			philo->status = new_status;
-			print_philo_status(philo);
-		}
+		philo->status = new_status;
+		print_philo_status(philo);
 		if (new_status == DEAD)
 			all_alive = false;
 	}
 }
 
-void	get_fork_order(t_philo *philo, int *first_fork, int *second_fork)
-{
-	if (philo->index % 2)
-	{
-		*first_fork = philo->index;
-		*second_fork = (philo->index + 1) % philo->data->nb_philo;
-	}
-	else
-	{
-		*first_fork = (philo->index + 1) % philo->data->nb_philo;
-		*second_fork = philo->index;
-	}
-}
