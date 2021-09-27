@@ -38,13 +38,14 @@ typedef struct s_time {
 }	t_timings;
 
 typedef struct s_philo {
-	int			id;
-	int			status;
-	long long	next_status_change;
-	t_timings	timings;
-	int			must_eat;
-	int			meal_count;
-	long long	last_meal_end;
+	int				index;
+	int				status;
+	long long		next_status_change;
+	t_timings		timings;
+	int				must_eat;
+	int				meal_count;
+	long long		last_meal_end;
+	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data {

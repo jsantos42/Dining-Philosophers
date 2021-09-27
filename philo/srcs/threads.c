@@ -37,33 +37,64 @@ void	*run_thread(void *philo_cast_to_void)
 
 	philo = (t_philo *)philo_cast_to_void;
 	while (is_not_dead(philo) && is_missing_a_meal(philo))
-		philo->timings.current_time_ms = get_next_checkpoint(philo);
+	{
+		eat_sleep_think_repeat(philo);
+		//do some mutex to protect current_time
+	}
 	return (NULL);
 }
+
+
+
 
 /*
 **	Gets the next timeframe in which there should be a status change of at least
 **	1 philosopher.
 */
 
-long long	get_next_checkpoint(t_philo *philo)
+void	eat_sleep_think_repeat(t_philo *philo)
 {
-	int			status;
+	int status;
+	int first_fork;
+	int second_fork;
+	long long current_time;
 
+	current_time = philo->timings.current_time_ms;
+	get_fork_order(philo, &first_fork, &second_fork);
 	status = philo->status;
-	if (philo->timings.current_time_ms == philo->next_status_change
-	|| status == THINK || status == FORK)
+	if (philo->next_status_change == current_time
+		|| status == THINK || status == FORK)
 	{
-		if (philo->timings.current_time_ms == philo->last_meal_end + philo->timings.time_to_eat)
+		if (current_time == philo->last_meal_end + philo->timings.time_to_die)
 			update_status(philo, DEAD);
 		else if (status == SLEEP)
 			update_status(philo, THINK);
-		else if (status == THINK || status == FORK)
-			try_to_take_fork(philo);
+		else if (status == THINK)
+			take_first_fork(philo, first_fork);
+		else if (status == FORK)
+			take_second_fork_and_eat(philo, second_fork);
 		else if (status == EAT)
 			go_to_sleep(philo);
-		if (philo->next_status_change > philo->last_meal_end + philo->timings.time_to_eat)
-			philo->next_status_change = philo->last_meal_end + philo->timings.time_to_eat;
+		if (philo->next_status_change > philo->last_meal_end + philo->timings.time_to_die)
+			philo->next_status_change = philo->last_meal_end + philo->timings.time_to_die;
 	}
-	return (philo->next_status_change);
+}
+
+long long	get_next_checkpoint(t_philo *philo)
+{
+	t_data *data;
+	int		iter;
+	long long	temp;
+
+	data = philo->data;
+	temp = 0;
+	iter = -1;
+	while (++iter < data->nb_philo)
+	{
+		if (data->philos[iter].next_status_change != 0
+			&& data->philos[iter].next_status_change < temp
+			&& data->philos[iter].status != FORK)
+			temp = data->philos[iter].next_status_change;
+	}
+	return (temp);
 }

@@ -17,10 +17,12 @@ int	import_input_args(int argc, char **argv, int **input_args)
 	*input_args = malloc(5);
 	if (!*input_args)
 		return (0);
+	argc--;
+	argv++;
 	iter = -1;
 	while (++iter < argc)
-		(*input_args)[iter] = import_int(argv[iter + 1]);
-	if (argc == 5)
+		(*input_args)[iter] = import_int(argv[iter]);
+	if (argc == 4)
 		(*input_args)[iter] = -1;
 	return (1);
 }

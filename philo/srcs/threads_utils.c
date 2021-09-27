@@ -41,7 +41,10 @@ void	update_status(t_philo *philo, int new_status)
 	static	bool	all_alive = true;
 
 	if (!all_alive)
+	{
 		philo->status = DEAD;
+		release_forks(philo);
+	}
 	else
 	{
 		if (philo->status != new_status)
@@ -51,5 +54,19 @@ void	update_status(t_philo *philo, int new_status)
 		}
 		if (new_status == DEAD)
 			all_alive = false;
+	}
+}
+
+void	get_fork_order(t_philo *philo, int *first_fork, int *second_fork)
+{
+	if (philo->index % 2)
+	{
+		*first_fork = philo->index;
+		*second_fork = (philo->index + 1) % philo->data->nb_philo;
+	}
+	else
+	{
+		*first_fork = (philo->index + 1) % philo->data->nb_philo;
+		*second_fork = philo->index;
 	}
 }
