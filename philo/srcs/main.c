@@ -13,7 +13,7 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (start_threads(&data) < 0)
 		return (-1);
-//	print_philo_status(data, 2);
-	free(data);
+	free(data.philos);
+	free(data.forks);
 	return (0);
 }

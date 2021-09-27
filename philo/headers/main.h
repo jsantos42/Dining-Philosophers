@@ -8,6 +8,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include "types.h"
+# include "actions.h"
 # include "init_data.h"
 # include "init_data_utils.h"
 # include "printer.h"

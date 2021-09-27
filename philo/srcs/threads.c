@@ -38,6 +38,7 @@ void	*run_thread(void *philo_cast_to_void)
 	philo = (t_philo *)philo_cast_to_void;
 	while (is_not_dead(philo) && is_missing_a_meal(philo))
 		philo->timings.current_time_ms = get_next_checkpoint(philo);
+	return (NULL);
 }
 
 /*
@@ -47,53 +48,22 @@ void	*run_thread(void *philo_cast_to_void)
 
 long long	get_next_checkpoint(t_philo *philo)
 {
-	long long	current_time;
-	long long	next_checkpoint;
 	int			status;
-	long long	*next_status_change;
 
-	current_time = philo->timings.current_time_ms;
-	next_checkpoint = 0;
-	next_status_change = &philo->next_status_change;
 	status = philo->status;
-	if (current_time == *next_status_change)
+	if (philo->timings.current_time_ms == philo->next_status_change
+	|| status == THINK || status == FORK)
 	{
-		if (current_time == philo->last_meal_end + philo->timings.time_to_eat)
-		{
+		if (philo->timings.current_time_ms == philo->last_meal_end + philo->timings.time_to_eat)
 			update_status(philo, DEAD);
-			return (next_checkpoint);
-		}
-		if (status == THINK || status == SLEEP)
-		{
-			if (is_fork_available)
-			{
-				take_fork(philo);
-				update_status(philo, FORK);
-				*next_status_change = check_when_forks_will_be_available_next(philo);
-			}
-			else
-				update_status(philo, THINK);
-		}
-		else if (status == FORK)
-		{
-			if (is_fork_available)
-			{
-				take_fork(philo);
-				update_status(philo, EAT);
-				*next_status_change = current_time + philo->timings.time_to_eat;
-			}
-
-		}
+		else if (status == SLEEP)
+			update_status(philo, THINK);
+		else if (status == THINK || status == FORK)
+			try_to_take_fork(philo);
 		else if (status == EAT)
-		{
-			philo->last_meal_end = current_time;
-			update_status(philo, SLEEP);
-			*next_status_change = current_time + philo->timings.time_to_sleep;
-		}
-		if (*next_status_change > philo->last_meal_end + philo->timings.time_to_eat)
-			*next_status_change = philo->last_meal_end + philo->timings.time_to_eat;
-		if (!next_checkpoint || next_checkpoint > *next_status_change)
-			next_checkpoint = *next_status_change;
-	};
-	return (next_checkpoint);
+			go_to_sleep(philo);
+		if (philo->next_status_change > philo->last_meal_end + philo->timings.time_to_eat)
+			philo->next_status_change = philo->last_meal_end + philo->timings.time_to_eat;
+	}
+	return (philo->next_status_change);
 }

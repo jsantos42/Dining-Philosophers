@@ -15,6 +15,8 @@ int	import_input_args(int argc, char **argv, int **input_args)
 	if (!is_input_correct(argc, argv))
 		return (0);
 	*input_args = malloc(5);
+	if (!*input_args)
+		return (0);
 	iter = -1;
 	while (++iter < argc)
 		(*input_args)[iter] = import_int(argv[iter + 1]);

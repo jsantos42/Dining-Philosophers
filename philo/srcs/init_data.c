@@ -21,11 +21,11 @@ int	init_data(int argc, char **argv, t_data *data)
 
 t_philo	*init_philos(t_data *data, int *input_args)
 {
-	int	iter;
-	t_philo	*philo;
+	t_philo	*philos;
+	int		iter;
 
-	philo = malloc(sizeof(t_philo) * data->nb_philo);
-	if (!philo)
+	philos = malloc(sizeof(t_philo) * data->nb_philo);
+	if (!philos)
 	{
 		print_error_message(MALLOC_FAILED);
 		return (NULL);
@@ -33,19 +33,19 @@ t_philo	*init_philos(t_data *data, int *input_args)
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
-		philo[iter].id = iter + 1;
-		philo[iter].status = THINK;
-		philo[iter].next_status_change = 0;
-		philo[iter].timings.current_time_ms = 0;
-		philo[iter].timings.time_to_die = input_args[TIME_TO_DIE]];
-		philo[iter].timings.time_to_eat = input_args[TIME_TO_EAT];
-		philo[iter].timings.time_to_sleep = input_args[TIME_TO_SLEEP];
-		philo[iter].must_eat = input_args[MUST_EAT];
-		philo[iter].last_meal_end = 0;
-		philo[iter].meal_count = 0;
+		philos[iter].id = iter + 1;
+		philos[iter].status = THINK;
+		philos[iter].next_status_change = 0;
+		philos[iter].timings.current_time_ms = 0;
+		philos[iter].timings.time_to_die = input_args[TIME_TO_DIE]];
+		philos[iter].timings.time_to_eat = input_args[TIME_TO_EAT];
+		philos[iter].timings.time_to_sleep = input_args[TIME_TO_SLEEP];
+		philos[iter].must_eat = input_args[MUST_EAT];
+		philos[iter].last_meal_end = 0;
+		philos[iter].meal_count = 0;
 	}
 	free(input_args);
-	return (philo);
+	return (philos);
 }
 
 /*
