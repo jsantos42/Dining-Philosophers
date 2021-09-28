@@ -9,7 +9,7 @@ int	init_philos(t_data *data, int *input_args)
 	if (!data->philos)
 		return (print_error_message(MALLOC_FAILED));
 	data->start_time_ms = 0;
-	data->start_time_ms = get_time(data);
+	data->current_time_ms = 0;
 	data->is_everybody_alive = true;
 	iter = -1;
 	while (++iter < data->nb_philo)
@@ -22,6 +22,7 @@ int	init_philos(t_data *data, int *input_args)
 		data->philos[iter].must_eat = input_args[MUST_EAT];
 		data->philos[iter].meal_count = 0;
 		data->philos[iter].last_meal_end = 0;
+		data->philos[iter].ready_to_move = false;
 //		data->philos[iter].printer_lock = ;
 		data->philos[iter].data = data;
 		get_fork_order(&data->philos[iter]);
@@ -47,6 +48,8 @@ int	init_forks(t_data *data)
 	while (++iter < data->nb_philo)
 	{
 		if (pthread_mutex_init(&data->forks[iter], NULL) != 0)
+			return (print_error_message(MUTEX_FAILED));
+		if (pthread_mutex_init(&data->philos[iter].ready_to_move_lock, NULL) != 0)
 			return (print_error_message(MUTEX_FAILED));
 	}
 	data->is_fork_available = malloc(data->nb_philo * sizeof(bool));

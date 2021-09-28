@@ -39,5 +39,7 @@ void	update_status(t_philo *philo, int new_status)
 
 /*
  * tem de se passar o tempo para a funcao de printar. se for excessivo, printa morto no tempo certo e desliga
+	 * se tempo dessincronizado, mutex na impressora
  * considerar eliminar o 2o fork update
+ *
  */

@@ -3,18 +3,16 @@
 
 void	try_to_eat(t_philo *philo)
 {
-	long long	time;
-
 	if (could_take_fork(philo, philo->first_fork))
 	{
 		if (could_take_fork(philo, philo->second_fork))
 		{
-			time = get_time(philo->data);
 			update_status(philo, FIRST_FORK);
 			update_status(philo, SECOND_FORK);
-			philo->last_meal_end = time + philo->time_to_eat;
 			update_status(philo, EAT);
-			ft_usleep(philo->data, time, philo->time_to_eat);
+			philo->meal_count++;
+			philo->last_meal_end = philo->data->current_time_ms + philo->time_to_eat;
+			philo->next_status_change = philo->last_meal_end;
 		}
 		else
 			release_fork(philo, philo->first_fork);
@@ -48,9 +46,17 @@ void	sleep_and_start_thinking(t_philo *philo)
 {
 	release_fork(philo, philo->first_fork);
 	release_fork(philo, philo->second_fork);
-	philo->meal_count++;
+	philo->next_status_change = philo->data->current_time_ms + philo->time_to_sleep;
 	update_status(philo, SLEEP);
-	ft_usleep(philo->data, philo->last_meal_end, philo->time_to_sleep);
-	update_status(philo, THINK);
 }
 
+
+///*
+// * function to set the next current time
+//*/
+//
+//void	get_next_checkpoint(t_philo *philo)
+//{
+//	pthread_mutex_lock(&philo->data->next_chis_everybody_alive_lock);
+//
+//}

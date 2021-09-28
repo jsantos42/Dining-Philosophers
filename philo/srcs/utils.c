@@ -35,8 +35,17 @@ long long get_time(t_data *data)
 }
 
 
-void	ft_usleep(t_data *data, long long starting_point, int sleeping_time)
+void	ft_usleep(t_data *data, int sleeping_time)
 {
-	while (get_time(data) < starting_point + sleeping_time)
+	long long	current_time;
+
+	current_time = get_time(data);
+	while ((get_time(data) - current_time) < sleeping_time)
 		usleep(sleeping_time / 10);
 }
+
+//void	ft_usleep(t_data *data, long long starting_point, int sleeping_time)
+//{
+//	while (get_time(data) < starting_point + sleeping_time)
+//		usleep(sleeping_time / 10);
+//}

@@ -11,10 +11,8 @@ int	start_threads(t_data *data)
 	pthread_t	*thread;
 	t_philo		*philo;
 
-	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
+	if (pthread_create(&data->dead_checker, NULL, move_timeframe_if_ready, (void*)data) != 0)
 		return (print_error_message(THREAD_CREATION_FAILED));
-	data->start_time_ms = 0;
-	data->start_time_ms = get_time(data);
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
@@ -46,37 +44,55 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	philo = (t_philo *)philo_cast_to_void;
 	while (philo->data->is_everybody_alive && is_missing_a_meal(philo))
 	{
-		if (get_time(philo->data) >= philo->last_meal_end + philo->time_to_die)
+		if (philo->data->current_time_ms == philo->next_status_change
+		|| philo->status == THINK)
 		{
-//			printf("%lld thread %d is going to be dead\n", get_time(philo->data), philo->index);
-			update_status(philo, DEAD);
-			break;
+			if (philo->data->current_time_ms >= philo->last_meal_end + philo->time_to_die)
+				update_status(philo, DEAD);
+			else if (philo->status == THINK)
+				try_to_eat(philo);
+			else if (philo->status == EAT)
+				sleep_and_start_thinking(philo);
+			else if (philo->status == SLEEP)
+				update_status(philo, THINK);
+			if (philo->next_status_change > philo->last_meal_end + philo->time_to_die)
+				philo->next_status_change = philo->last_meal_end + philo->time_to_die;
+			pthread_mutex_lock(&philo->ready_to_move_lock);
+			philo->ready_to_move = true;
+			pthread_mutex_unlock(&philo->ready_to_move_lock);
 		}
-		else if (philo->status == THINK)
-			try_to_eat(philo);
-		else if (philo->status == EAT)
-			sleep_and_start_thinking(philo);
 	}
 	return (NULL);
 }
 
-void	*check_for_dead_philos(void *data_cast_to_void)
+void	*move_timeframe_if_ready(void *data_cast_to_void)
 {
 	t_data	*data;
 	int		iter;
-	long long	time;
+	int		ready_count;
 
 	data = (t_data *)data_cast_to_void;
 	while (1)
 	{
-		time = get_time(data);
+		ready_count = 0;
 		iter = -1;
 		while (++iter < data->nb_philo)
 		{
-			if (time >= data->philos[iter].last_meal_end + data->philos[iter].time_to_die)
+			pthread_mutex_lock(&data->philos[iter].ready_to_move_lock);
+			if (data->philos[iter].ready_to_move)
+				ready_count++;
+			pthread_mutex_unlock(&data->philos[iter].ready_to_move_lock);
+		}
+		if (ready_count == data->nb_philo)
+		{
+			// this next line needs to get a function to determinte which is the smaller status change
+			data->current_time_ms += 200; //data->philos[0].next_status_change;
+			iter = -1;
+			while (++iter < data->nb_philo)
 			{
-				update_status(&data->philos[iter], DEAD);
-				return (NULL);
+				pthread_mutex_lock(&data->philos[iter].ready_to_move_lock);
+				data->philos[iter].ready_to_move = false;
+				pthread_mutex_unlock(&data->philos[iter].ready_to_move_lock);
 			}
 		}
 	}
