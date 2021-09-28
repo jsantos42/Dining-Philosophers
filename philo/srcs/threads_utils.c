@@ -44,7 +44,8 @@ void	update_status(t_philo *philo, int new_status)
 	if (!all_alive)
 	{
 		philo->status = DEAD;
-		release_forks(philo);
+		release_fork(philo, philo->first_fork);
+		release_fork(philo, philo->second_fork);
 	}
 	else
 	{

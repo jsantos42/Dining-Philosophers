@@ -4,7 +4,9 @@ void	print_philo_status(t_philo *philo)
 {
 	int				status;
 	char			*update;
+	long long		time;
 
+	time = get_time(philo->data);
 	status = philo->status;
 	if (status == THINK)
 		update = ft_strdup("is thinking");
@@ -13,15 +15,18 @@ void	print_philo_status(t_philo *philo)
 	else if (status == SECOND_FORK)
 		update = ft_strdup("has taken another fork");
 	else if (status == EAT)
+	{
 		update = ft_strdup("is eating");
+//		time = philo->last_meal_end - philo->time_to_eat;
+	}
 	else if (status == SLEEP)
 		update = ft_strdup("is sleeping");
 	else
 	{
 		update = ft_strdup("\x1B[31mjust died");
-//		philo->timings.current_time_ms = philo->last_meal_end + philo->timings.time_to_die;
+//		time = philo->last_meal_end + philo->time_to_die;
 	}
-	printf("%6lld ms	%2d %s.\n", get_time(philo->data), philo->index + 1, update);
+	printf("%6lld ms	%2d %s.\n", time, philo->index + 1, update);
 	free(update);
 }
 

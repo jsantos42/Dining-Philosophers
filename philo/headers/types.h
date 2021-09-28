@@ -50,6 +50,7 @@ typedef struct s_data {
 	int				nb_philo;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	bool			*is_fork_available;
 	pthread_t		dead_checker;
 	long long		start_time_ms;
 //	long long		current_time_ms;

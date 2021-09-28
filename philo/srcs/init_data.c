@@ -48,8 +48,14 @@ int	init_forks(t_data *data)
 		if (pthread_mutex_init(&data->forks[iter], NULL) != 0)
 			return (print_error_message(MUTEX_FAILED));
 	}
-	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
-		return (print_error_message(MUTEX_FAILED));
+	data->is_fork_available = malloc(data->nb_philo * sizeof(bool));
+	if (!data->is_fork_available)
+		return (print_error_message(MALLOC_FAILED));
+	iter = -1;
+	while (++iter < data->nb_philo)
+		data->is_fork_available[iter] = true;
+//	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
+//		return (print_error_message(MUTEX_FAILED));
 	return (1);
 }
 

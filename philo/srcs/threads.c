@@ -11,8 +11,8 @@ int	start_threads(t_data *data)
 	pthread_t	*thread;
 	t_philo		*philo;
 
-//	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
-//		return (print_error_message(THREAD_CREATION_FAILED));
+	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
+		return (print_error_message(THREAD_CREATION_FAILED));
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
@@ -52,7 +52,7 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 			break;
 		}
 		else if (philo->status == THINK)
-			take_forks(philo);
+			try_to_eat(philo);
 		else if (philo->status == EAT)
 			sleep_and_start_thinking(philo);
 //		pthread_mutex_unlock(&philo->data->dead_lock);
@@ -60,11 +60,24 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	return (NULL);
 }
 
-//void	*check_for_dead_philos(void *data_cast_to_void)
-//{
-//	t_data	*data;
-//
-//	data = (t_data *)data_cast_to_void;
-//
-//
-//}
+void	*check_for_dead_philos(void *data_cast_to_void)
+{
+	t_data	*data;
+	int		iter;
+	long long	time;
+
+	data = (t_data *)data_cast_to_void;
+	while (1)
+	{
+		time = get_time(data);
+		iter = -1;
+		while (++iter < data->nb_philo)
+		{
+			if (time >= data->philos[iter].last_meal_end + data->philos[iter].time_to_die)
+			{
+				update_status(&data->philos[iter], DEAD);
+				return (NULL);
+			}
+		}
+	}
+}

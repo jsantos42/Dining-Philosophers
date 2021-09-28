@@ -58,4 +58,6 @@ static int	import_input_args(int argc, char **argv, int **input_args)
 //		free(data->philos);
 //	if (data->forks)
 //		free(data->forks);
+//	if (data->fork_availability)
+//		free(data->fork_availability);
 //}
