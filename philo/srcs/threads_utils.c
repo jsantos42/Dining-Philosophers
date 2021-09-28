@@ -25,35 +25,14 @@ int	is_missing_a_meal(t_philo *philo)
 		return (0);
 }
 
-/*
-**	Starts by checking whether any philosopher has already been killed; it does
-**	so through a static variable, since this function is used by every thread.
-**	If any philosopher is already dead, then the program should terminate and
-**	print nothing else.
-**	On the other hand, if all philosophers are still alive, this function prints
-**	the new status update (in case it differs from the previous one) and, if the
-**	new status is DEAD, then it changes the static variable, so that every
-**	thread will eventually exit.
-*/
 
 void	update_status(t_philo *philo, int new_status)
 {
-	static bool all_alive = true;
-
-		pthread_mutex_lock(&philo->data->dead_lock);
-	if (!all_alive)
-	{
-		philo->status = DEAD;
-		release_fork(philo, philo->first_fork);
-		release_fork(philo, philo->second_fork);
-	}
-	else
-	{
-		philo->status = new_status;
+	pthread_mutex_lock(&philo->data->is_everybody_alive_lock);
+	philo->status = new_status;
+	if (philo->data->is_everybody_alive)
 		print_philo_status(philo);
-		if (new_status == DEAD)
-			all_alive = false;
-	}
-		pthread_mutex_unlock(&philo->data->dead_lock);
+	if (new_status == DEAD)
+		philo->data->is_everybody_alive = false;
+	pthread_mutex_unlock(&philo->data->is_everybody_alive_lock);
 }
-

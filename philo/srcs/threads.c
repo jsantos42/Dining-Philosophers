@@ -42,9 +42,8 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_cast_to_void;
-	while (is_alive(philo) && is_missing_a_meal(philo))
+	while (philo->data->is_everybody_alive && is_missing_a_meal(philo))
 	{
-//		pthread_mutex_lock(&philo->data->dead_lock);
 		if (get_time(philo->data) >= philo->last_meal_end + philo->time_to_die)
 		{
 //			printf("%lld thread %d is going to be dead\n", get_time(philo->data), philo->index);
@@ -55,7 +54,6 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 			try_to_eat(philo);
 		else if (philo->status == EAT)
 			sleep_and_start_thinking(philo);
-//		pthread_mutex_unlock(&philo->data->dead_lock);
 	}
 	return (NULL);
 }

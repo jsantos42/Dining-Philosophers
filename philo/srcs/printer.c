@@ -15,17 +15,11 @@ void	print_philo_status(t_philo *philo)
 	else if (status == SECOND_FORK)
 		update = ft_strdup("has taken another fork");
 	else if (status == EAT)
-	{
 		update = ft_strdup("is eating");
-//		time = philo->last_meal_end - philo->time_to_eat;
-	}
 	else if (status == SLEEP)
 		update = ft_strdup("is sleeping");
 	else
-	{
 		update = ft_strdup("\x1B[31mjust died");
-//		time = philo->last_meal_end + philo->time_to_die;
-	}
 	printf("%6lld ms	%2d %s.\n", time, philo->index + 1, update);
 	free(update);
 }

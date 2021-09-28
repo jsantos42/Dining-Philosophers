@@ -40,6 +40,6 @@ void	ft_usleep(t_data *data, int sleeping_time)
 	long long	current_time;
 
 	current_time = get_time(data);
-	while ((get_time(data) - current_time) < sleeping_time - 10)
+	while ((get_time(data) - current_time) < sleeping_time)
 		usleep(sleeping_time / 10);
 }

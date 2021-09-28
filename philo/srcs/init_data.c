@@ -10,6 +10,7 @@ int	init_philos(t_data *data, int *input_args)
 		return (print_error_message(MALLOC_FAILED));
 	data->start_time_ms = 0;
 	data->start_time_ms = get_time(data);
+	data->is_everybody_alive = true;
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
@@ -54,8 +55,8 @@ int	init_forks(t_data *data)
 	iter = -1;
 	while (++iter < data->nb_philo)
 		data->is_fork_available[iter] = true;
-//	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
-//		return (print_error_message(MUTEX_FAILED));
+	if (pthread_mutex_init(&data->is_everybody_alive_lock, NULL) != 0)
+		return (print_error_message(MUTEX_FAILED));
 	return (1);
 }
 

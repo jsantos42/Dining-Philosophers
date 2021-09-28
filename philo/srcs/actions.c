@@ -5,7 +5,6 @@ void	try_to_eat(t_philo *philo)
 {
 	if (could_take_fork(philo, philo->first_fork))
 	{
-		//	printf("%lld thread %d is trying to eat\n", get_time(philo->data), philo->index);
 		if (could_take_fork(philo, philo->second_fork))
 		{
 			update_status(philo, FIRST_FORK);
@@ -41,9 +40,6 @@ void	release_fork(t_philo *philo, int fork_index)
 	philo->data->is_fork_available[fork_index] = true;
 	pthread_mutex_unlock(&philo->data->forks[fork_index]);
 }
-
-//	printf("%lld thread %d started eating\n",get_time(philo->data),  philo->index);
-//	printf("%lld thread %d just ate\n", get_time(philo->data), philo->index);
 
 void	sleep_and_start_thinking(t_philo *philo)
 {

@@ -51,10 +51,10 @@ typedef struct s_data {
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	bool			*is_fork_available;
+	pthread_mutex_t	is_everybody_alive_lock;
+	bool			is_everybody_alive;
 	pthread_t		dead_checker;
 	long long		start_time_ms;
-//	long long		current_time_ms;
-	pthread_mutex_t	dead_lock;
 }	t_data;
 
 #endif
