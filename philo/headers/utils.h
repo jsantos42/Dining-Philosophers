@@ -5,7 +5,7 @@
 
 int	ft_isdigit(int c);
 int	is_in_range_long(long value, long min, long max);
-long long get_current_time(void);
-void	ft_usleep(int sleeping_time);
+long long get_time(t_data *data);
+void	ft_usleep(t_data *data, int sleeping_time);
 
 #endif

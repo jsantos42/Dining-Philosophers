@@ -1,6 +1,5 @@
 CC	=				gcc
-CFLAGS =			-Wall -Werror -Wextra -g
-MLX_FLAGS =			-framework OpenGL -framework AppKit
+CFLAGS =			-Wall -Werror -Wextra -g# -fsanitize=thread
 RM =				rm -rf
 
 NAME =				philo

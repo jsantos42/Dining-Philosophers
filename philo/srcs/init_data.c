@@ -1,53 +1,31 @@
 #include "../headers/init_data.h"
 
-
-int	init_data(int argc, char **argv, t_data *data)
+int	init_philos(t_data *data, int *input_args)
 {
-	int		*input_args;
+	int	iter;
 
-	if (!import_input_args(argc, argv, &input_args))
-		return (print_error_message(ILLEGAL_INPUT));
 	data->nb_philo = input_args[NB_PHILO];
-	data->philos = init_philos(data, input_args);
+	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!data->philos)
-		return (-1);
-	data->forks = init_forks(data);
-	if (!data->forks)
-		return (-1);
-	//printer_mutex??
-	return (1);
-}
-
-
-t_philo	*init_philos(t_data *data, int *input_args)
-{
-	t_philo	*philos;
-	int		iter;
-
-	philos = malloc(sizeof(t_philo) * data->nb_philo);
-	if (!philos)
-	{
-		print_error_message(MALLOC_FAILED);
-		return (NULL);
-	}
+		return (print_error_message(MALLOC_FAILED));
+	data->start_time_ms = 0;
+	data->start_time_ms = get_time(data);
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
-		philos[iter].index = iter;
-		philos[iter].status = THINK;
-		philos[iter].next_status_change = 0;
-		philos[iter].timings.start_time_ms = get_current_time();
-		philos[iter].timings.current_time_ms = philos[iter].timings.start_time_ms;
-		philos[iter].timings.time_to_die = input_args[TIME_TO_DIE];
-		philos[iter].timings.time_to_eat = input_args[TIME_TO_EAT];
-		philos[iter].timings.time_to_sleep = input_args[TIME_TO_SLEEP];
-		philos[iter].must_eat = input_args[MUST_EAT];
-		philos[iter].last_meal_end = philos[iter].timings.start_time_ms;
-		philos[iter].meal_count = 0;
-		philos[iter].data = data;
+		data->philos[iter].index = iter;
+		data->philos[iter].status = THINK;
+		data->philos[iter].time_to_die = input_args[TIME_TO_DIE];
+		data->philos[iter].time_to_eat = input_args[TIME_TO_EAT];
+		data->philos[iter].time_to_sleep = input_args[TIME_TO_SLEEP];
+		data->philos[iter].must_eat = input_args[MUST_EAT];
+		data->philos[iter].meal_count = 0;
+		data->philos[iter].last_meal_end = 0;
+//		data->philos[iter].printer_lock = ;
+		data->philos[iter].data = data;
+		get_fork_order(&data->philos[iter]);
 	}
-//	free(input_args);
-	return (philos);
+	return (1);
 }
 
 /*
@@ -57,28 +35,41 @@ t_philo	*init_philos(t_data *data, int *input_args)
 **	a mutex on them.
 */
 
-pthread_mutex_t	*init_forks(t_data *data)
+int	init_forks(t_data *data)
 {
-	pthread_mutex_t *forks;
-	int 			iter;
+	int	iter;
 
-	forks = malloc(data->nb_philo * sizeof(pthread_mutex_t));
-	if (!forks)
-	{
-		free(data->philos);
-		print_error_message(MALLOC_FAILED);
-		return (NULL);
-	}
+	data->forks = malloc(data->nb_philo * sizeof(pthread_mutex_t));
+	if (!data->forks)
+		return (print_error_message(MALLOC_FAILED));
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
-		if (pthread_mutex_init(&forks[iter], NULL) != 0)
-		{
-			free(data->philos);
-			free(forks);
-			print_error_message(MUTEX_FAILED);
-			return (NULL);
-		}
+		if (pthread_mutex_init(&data->forks[iter], NULL) != 0)
+			return (print_error_message(MUTEX_FAILED));
 	}
-	return (forks);
+	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
+		return (print_error_message(MUTEX_FAILED));
+	return (1);
+}
+
+/*
+**	If each philosopher tries to grab the fork to his left first, there's a tie
+**	and no one can actually pick a second fork (since they only release them
+**	after finished eating!). As such, some philosophers should try to grab the
+**	fork on their left first, while others should try to grab the fork on their
+**	right first.
+*/
+
+void	get_fork_order(t_philo *philo)
+{
+	if (philo->index % 2)
+	{
+		philo->first_fork = philo->index;
+		philo->second_fork = (philo->index + 1) % philo->data->nb_philo;
+	} else
+	{
+		philo->first_fork = (philo->index + 1) % philo->data->nb_philo;
+		philo->second_fork = philo->index;
+	}
 }

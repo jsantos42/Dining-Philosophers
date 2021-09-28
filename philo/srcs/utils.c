@@ -22,7 +22,7 @@ int	is_in_range_long(long value, long min, long max)
 **	from that date.
 */
 
-long long get_current_time(void)
+long long get_time(t_data *data)
 {
 	t_timeval	timeval;
 	long long 	milliseconds;
@@ -30,15 +30,16 @@ long long get_current_time(void)
 	if (gettimeofday(&timeval, NULL) == -1)
 		return (0);
 	milliseconds = timeval.tv_sec * MILLISECS_IN_A_SEC + timeval.tv_usec;
+	milliseconds -= data->start_time_ms;
 	return (milliseconds);
 }
 
 
-void	ft_usleep(int sleeping_time)
+void	ft_usleep(t_data *data, int sleeping_time)
 {
 	long long	current_time;
 
-	current_time = get_current_time();
-	while ((get_current_time() - current_time) < sleeping_time)
+	current_time = get_time(data);
+	while ((get_time(data) - current_time) < sleeping_time)
 		usleep(sleeping_time / 10);
 }

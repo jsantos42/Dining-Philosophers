@@ -1,15 +1,15 @@
 #include "../headers/threads_utils.h"
 
+
 /*
-**	Checks whether the given philosopher is dead.
+**	Checks whether all philosophers are still alive.
 */
 
-int	is_not_dead(t_philo *philo)
+int	is_alive(t_philo *philo)
 {
-	if (philo->status != DEAD)
-		return (1);
-	else
+	if (philo->status == DEAD)
 		return (0);
+	return (1);
 }
 
 /*
@@ -38,9 +38,9 @@ int	is_missing_a_meal(t_philo *philo)
 
 void	update_status(t_philo *philo, int new_status)
 {
-	static	bool	all_alive = true;
+	static bool all_alive = true;
 
-	philo->timings.current_time_ms = get_current_time();
+		pthread_mutex_lock(&philo->data->dead_lock);
 	if (!all_alive)
 	{
 		philo->status = DEAD;
@@ -53,5 +53,6 @@ void	update_status(t_philo *philo, int new_status)
 		if (new_status == DEAD)
 			all_alive = false;
 	}
+		pthread_mutex_unlock(&philo->data->dead_lock);
 }
 

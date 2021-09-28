@@ -2,30 +2,6 @@
 
 static int	is_positive_int(char *str);
 
-/*
-**	Imports the program arguments (which should all be ints) to a temporary
-**	array. In case the optional argument was not provided (meaning, argc is 5
-**	instead of 6), sets the last argument as -1.
-*/
-
-int	import_input_args(int argc, char **argv, int **input_args)
-{
-	int	iter;
-
-	if (!is_input_correct(argc, argv))
-		return (0);
-	*input_args = malloc(5);
-	if (!*input_args)
-		return (0);
-	argc--;
-	argv++;
-	iter = -1;
-	while (++iter < argc)
-		(*input_args)[iter] = import_int(argv[iter]);
-	if (argc == 4)
-		(*input_args)[iter] = -1;
-	return (1);
-}
 
 /*
 **	Checks if the program arguments are correct. They should be 4 or 5, and all

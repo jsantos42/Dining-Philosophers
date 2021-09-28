@@ -19,9 +19,9 @@ void	print_philo_status(t_philo *philo)
 	else
 	{
 		update = ft_strdup("\x1B[31mjust died");
-		philo->timings.current_time_ms = philo->last_meal_end + philo->timings.time_to_die;
+//		philo->timings.current_time_ms = philo->last_meal_end + philo->timings.time_to_die;
 	}
-	printf("%6lld ms	%2d %s.\n", philo->timings.current_time_ms - philo->timings.start_time_ms, philo->index + 1, update);
+	printf("%6lld ms	%2d %s.\n", get_time(philo->data), philo->index + 1, update);
 	free(update);
 }
 
@@ -43,5 +43,5 @@ int	print_error_message(int error)
 		printf("Memory allocation failed.\n");
 	else if (error == GET_TIME_FAILED)
 		printf("Getting time of day failed.\n");
-	return (error);
+	return (0);
 }

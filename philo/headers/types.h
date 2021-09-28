@@ -31,22 +31,17 @@ typedef enum e_errors {
 
 typedef struct timeval	t_timeval;
 
-typedef struct s_time {
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	long long	start_time_ms;
-	long long	current_time_ms;
-}	t_timings;
-
 typedef struct s_philo {
 	int				index;
 	int				status;
-	long long		next_status_change;
-	t_timings		timings;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				must_eat;
 	int				meal_count;
 	long long		last_meal_end;
+	int				first_fork;
+	int				second_fork;
 	pthread_t		thread;
 	struct s_data	*data;
 }	t_philo;
@@ -55,5 +50,10 @@ typedef struct s_data {
 	int				nb_philo;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	pthread_t		dead_checker;
+	long long		start_time_ms;
+//	long long		current_time_ms;
+	pthread_mutex_t	dead_lock;
 }	t_data;
+
 #endif

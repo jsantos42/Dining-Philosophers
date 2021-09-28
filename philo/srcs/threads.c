@@ -1,8 +1,8 @@
 #include "../headers/threads.h"
 
 /*
-**	Starts a thread for each philosopher, each executing the run_thread function
-**	with philo as its only argument.
+**	Starts a thread for each philosopher, each executing the
+**	eat_sleep_think_repeat function with philo as its only argument.
 */
 
 int	start_threads(t_data *data)
@@ -11,12 +11,14 @@ int	start_threads(t_data *data)
 	pthread_t	*thread;
 	t_philo		*philo;
 
+//	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
+//		return (print_error_message(THREAD_CREATION_FAILED));
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{
 		thread = &data->philos[iter].thread;
 		philo = &data->philos[iter];
-		if (pthread_create(thread, NULL, run_thread, (void*)philo) != 0)
+		if (pthread_create(thread, NULL, eat_sleep_think_repeat, (void*)philo) != 0)
 			return (print_error_message(THREAD_CREATION_FAILED));
 	}
 	iter = -1;
@@ -33,30 +35,36 @@ int	start_threads(t_data *data)
 /*
 **	This is the function that each thread runs when starting. Runs until the
 **	given philosopher is dead or has had enough meals.
-**	In each instance, it calculates the next timeframe in which there should be
-**	a status change its philosopher.
 */
 
-void	*run_thread(void *philo_cast_to_void)
+void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_cast_to_void;
-	while (is_not_dead(philo) && is_missing_a_meal(philo))
-		eat_sleep_think_repeat(philo);
+	while (is_alive(philo) && is_missing_a_meal(philo))
+	{
+//		pthread_mutex_lock(&philo->data->dead_lock);
+		if (get_time(philo->data) >= philo->last_meal_end + philo->time_to_die)
+		{
+//			printf("%lld thread %d is going to be dead\n", get_time(philo->data), philo->index);
+			update_status(philo, DEAD);
+			break;
+		}
+		else if (philo->status == THINK)
+			take_forks(philo);
+		else if (philo->status == EAT)
+			sleep_and_start_thinking(philo);
+//		pthread_mutex_unlock(&philo->data->dead_lock);
+	}
 	return (NULL);
 }
 
-
-void	eat_sleep_think_repeat(t_philo *philo)
-{
-	philo->timings.current_time_ms = get_current_time();
-	if (philo->timings.current_time_ms >= philo->last_meal_end + philo->timings.time_to_die)
-		update_status(philo, DEAD);
-	else if (philo->status == SLEEP)
-		update_status(philo, THINK);
-	else if (philo->status == THINK)
-		take_forks(philo);
-	else if (philo->status == EAT)
-		go_to_sleep(philo);
-}
+//void	*check_for_dead_philos(void *data_cast_to_void)
+//{
+//	t_data	*data;
+//
+//	data = (t_data *)data_cast_to_void;
+//
+//
+//}
