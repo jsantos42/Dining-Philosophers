@@ -1,9 +1,9 @@
 #include "../headers/actions.h"
 
 
-void	try_to_eat(t_philo *philo)
+uint64_t	try_to_eat(t_philo *philo)
 {
-	long long	time;
+	uint64_t	time;
 
 	if (could_take_fork(philo, philo->first_fork))
 	{
@@ -15,10 +15,12 @@ void	try_to_eat(t_philo *philo)
 			philo->last_meal_end = time + philo->time_to_eat;
 			update_status(philo, EAT);
 			ft_usleep(philo->data, time, philo->time_to_eat);
+			return (philo->time_to_eat);
 		}
 		else
 			release_fork(philo, philo->first_fork);
 	}
+	return (0);
 }
 
 
@@ -44,7 +46,7 @@ void	release_fork(t_philo *philo, int fork_index)
 	pthread_mutex_unlock(&philo->data->forks[fork_index]);
 }
 
-void	sleep_and_start_thinking(t_philo *philo)
+u_int64_t	sleep_and_start_thinking(t_philo *philo)
 {
 	release_fork(philo, philo->first_fork);
 	release_fork(philo, philo->second_fork);
@@ -52,5 +54,6 @@ void	sleep_and_start_thinking(t_philo *philo)
 	update_status(philo, SLEEP);
 	ft_usleep(philo->data, philo->last_meal_end, philo->time_to_sleep);
 	update_status(philo, THINK);
+	return (philo->time_to_sleep);
 }
 

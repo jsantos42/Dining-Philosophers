@@ -34,15 +34,16 @@ typedef struct timeval	t_timeval;
 typedef struct s_philo {
 	int				index;
 	int				status;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	uint64_t 		time_to_die;
+	uint64_t 		time_to_eat;
+	uint64_t 		time_to_sleep;
 	int				must_eat;
 	int				meal_count;
-	long long		last_meal_end;
+	uint64_t		last_meal_end;
 	int				first_fork;
 	int				second_fork;
 	pthread_t		thread;
+	uint64_t		current_time_ms;
 	struct s_data	*data;
 }	t_philo;
 
@@ -54,7 +55,7 @@ typedef struct s_data {
 	pthread_mutex_t	is_everybody_alive_lock;
 	bool			is_everybody_alive;
 	pthread_t		dead_checker;
-	long long		start_time_ms;
+	uint64_t		start_time_ms;
 }	t_data;
 
 #endif

@@ -22,10 +22,10 @@ int	is_in_range_long(long value, long min, long max)
 **	from that date.
 */
 
-long long get_time(t_data *data)
+unsigned long long get_time(t_data *data)
 {
 	t_timeval	timeval;
-	long long 	milliseconds;
+	unsigned long long 	milliseconds;
 
 	if (gettimeofday(&timeval, NULL) == -1)
 		return (0);
@@ -35,7 +35,7 @@ long long get_time(t_data *data)
 }
 
 
-void	ft_usleep(t_data *data, long long starting_point, int sleeping_time)
+void	ft_usleep(t_data *data, uint64_t starting_point, uint64_t sleeping_time)
 {
 	while (get_time(data) < starting_point + sleeping_time)
 		usleep(sleeping_time / 10);
