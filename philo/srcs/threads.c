@@ -13,6 +13,8 @@ int	start_threads(t_data *data)
 
 	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
 		return (print_error_message(THREAD_CREATION_FAILED));
+	data->start_time_ms = 0;
+	data->start_time_ms = get_time(data);
 	iter = -1;
 	while (++iter < data->nb_philo)
 	{

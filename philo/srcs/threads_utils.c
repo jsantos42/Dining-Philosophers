@@ -36,3 +36,8 @@ void	update_status(t_philo *philo, int new_status)
 		philo->data->is_everybody_alive = false;
 	pthread_mutex_unlock(&philo->data->is_everybody_alive_lock);
 }
+
+/*
+ * tem de se passar o tempo para a funcao de printar. se for excessivo, printa morto no tempo certo e desliga
+ * considerar eliminar o 2o fork update
+ */
