@@ -15,9 +15,12 @@ int	main(int argc, char **argv)
 	int		ret;
 
 	input_args = NULL;
+	data.philos = NULL;
+	data.is_fork_available = NULL;
 	ret = 0;
-	if (!import_input_args(argc, argv, &input_args)
-		|| !init_philos(&data, input_args)
+	if (!import_input_args(argc, argv, &input_args))
+		return (-1);
+	if (!init_philos(&data, input_args)
 		|| !init_forks(&data)
 		|| !start_threads(&data))
 		ret = -1;
@@ -58,6 +61,8 @@ static void	free_memory(t_data *data, int *input_args)
 		free(input_args);
 	if (data->philos)
 		free(data->philos);
+	if (data->is_fork_available)
+		free(data->is_fork_available);
 	if (data->forks)
 	{
 		iter = -1;
