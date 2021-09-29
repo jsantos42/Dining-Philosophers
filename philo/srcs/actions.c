@@ -2,18 +2,16 @@
 
 void	try_to_eat(t_philo *philo)
 {
-	long long	time;
-
 	if (could_take_fork(philo, philo->first_fork))
 	{
 		if (could_take_fork(philo, philo->second_fork))
 		{
-			time = get_time(philo->data);
+//			time = get_time(philo->data);
 			update_status(philo, FIRST_FORK);
 			update_status(philo, SECOND_FORK);
-			philo->last_meal_end = time + philo->time_to_eat;
+			philo->last_meal_end = get_time();
 			update_status(philo, EAT);
-			ft_usleep(philo->data, time, philo->time_to_eat);
+			ft_usleep(philo->last_meal_end, philo->time_to_eat);
 		}
 		else
 			release_fork(philo, philo->first_fork);
@@ -44,10 +42,11 @@ void	release_fork(t_philo *philo, int fork_index)
 
 void	sleep_and_start_thinking(t_philo *philo)
 {
+	philo->last_meal_end = get_time();
 	release_fork(philo, philo->first_fork);
 	release_fork(philo, philo->second_fork);
 	philo->meal_count++;
 	update_status(philo, SLEEP);
-	ft_usleep(philo->data, philo->last_meal_end, philo->time_to_sleep);
+	ft_usleep(philo->last_meal_end, philo->time_to_sleep);
 	update_status(philo, THINK);
 }

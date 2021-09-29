@@ -8,8 +8,7 @@ int	init_philos(t_data *data, int *input_args)
 	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!data->philos)
 		return (print_error_message(MALLOC_FAILED));
-	data->start_time_ms = 0;
-	data->start_time_ms = get_time(data);
+	data->start_time_ms = get_time();
 	data->is_everybody_alive = true;
 	iter = -1;
 	while (++iter < data->nb_philo)
@@ -21,7 +20,7 @@ int	init_philos(t_data *data, int *input_args)
 		data->philos[iter].time_to_sleep = input_args[TIME_TO_SLEEP];
 		data->philos[iter].must_eat = input_args[MUST_EAT];
 		data->philos[iter].meal_count = 0;
-		data->philos[iter].last_meal_end = 0;
+		data->philos[iter].last_meal_end = data->start_time_ms;
 		data->philos[iter].data = data;
 		get_fork_order(&data->philos[iter]);
 	}

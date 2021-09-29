@@ -67,3 +67,16 @@ int	import_int(char *str)
 	output = (int)temp * sign;
 	return (output);
 }
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
+int	is_in_range_long(long value, long min, long max)
+{
+	return (value >= min && value <= max);
+}
