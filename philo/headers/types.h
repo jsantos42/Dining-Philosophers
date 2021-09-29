@@ -39,7 +39,7 @@ typedef struct s_philo {
 	size_t 			time_to_sleep;
 	int				must_eat;
 	int				meal_count;
-	t_timeval		last_meal_end;
+	t_timeval		last_meal_start;
 	int				first_fork;
 	int				second_fork;
 	pthread_t		thread;
@@ -53,7 +53,6 @@ typedef struct s_data {
 	bool			*is_fork_available;
 	pthread_mutex_t	is_everybody_alive_lock;
 	bool			is_everybody_alive;
-	pthread_t		dead_checker;
 	t_timeval		start_time_ms;
 }	t_data;
 

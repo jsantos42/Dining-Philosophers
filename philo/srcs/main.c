@@ -1,7 +1,7 @@
 #include "../headers/main.h"
 
 static int	import_input_args(int argc, char **argv, int **input_args);
-//static void	free_memory(t_data *data, int *input_args);
+static void	free_memory(t_data *data, int *input_args);
 
 /*
 **	Note that exit() is not an allowed function on the subject, which makes it
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 		|| !init_forks(&data)
 		|| !start_threads(&data))
 		ret = -1;
-//	free_memory(&data, input_args);
+	free_memory(&data, input_args);
 	return (ret);
 }
 
@@ -49,14 +49,12 @@ static int	import_input_args(int argc, char **argv, int **input_args)
 	return (1);
 }
 
-//static void	free_memory(t_data *data, int *input_args)
-//{
-//	if (input_args)
-//		free(input_args);
-//	if (data->philos)
-//		free(data->philos);
-//	if (data->forks)
-//		free(data->forks);
-//	if (data->fork_availability)
-//		free(data->fork_availability);
-//}
+static void	free_memory(t_data *data, int *input_args)
+{
+	if (input_args)
+		free(input_args);
+	if (data->philos)
+		free(data->philos);
+	if (data->forks)
+		free(data->forks);
+}

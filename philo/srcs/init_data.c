@@ -20,7 +20,7 @@ int	init_philos(t_data *data, int *input_args)
 		data->philos[iter].time_to_sleep = input_args[TIME_TO_SLEEP];
 		data->philos[iter].must_eat = input_args[MUST_EAT];
 		data->philos[iter].meal_count = 0;
-		data->philos[iter].last_meal_end = data->start_time_ms;
+		data->philos[iter].last_meal_start = data->start_time_ms;
 		data->philos[iter].data = data;
 		get_fork_order(&data->philos[iter]);
 	}

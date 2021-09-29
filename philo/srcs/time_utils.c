@@ -26,17 +26,15 @@ u_int64_t	time_elapsed(t_timeval start_time, t_timeval end_time)
 	return (end_time_ms - start_time_ms);
 }
 
-void	ft_usleep(t_timeval start_time, uint64_t sleeping_time)
-//		void	ft_usleep(t_timeval start_time, uint64_t sleeping_time, t_philo *philo)
+void	ft_usleep(t_timeval start_time, uint64_t sleeping_time, t_philo *philo)
 {
-	usleep(sleeping_time - sleeping_time / 10);
 	while (time_elapsed(start_time, get_time()) <= sleeping_time)
-//	{
-//		if (status == sleep
-//		cjechk
-//		else
-//		usleep
-			continue ;
-
-//	}
+	{
+		if (philo->status == SLEEP)
+		{
+			if (time_elapsed(philo->last_meal_start, get_time()) >= (uint64_t) philo->time_to_die)
+				update_status(philo, DEAD);
+		}
+		usleep(sleeping_time - sleeping_time / 1);
+	}
 }
