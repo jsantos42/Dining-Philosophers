@@ -27,8 +27,16 @@ u_int64_t	time_elapsed(t_timeval start_time, t_timeval end_time)
 }
 
 void	ft_usleep(t_timeval start_time, uint64_t sleeping_time)
+//		void	ft_usleep(t_timeval start_time, uint64_t sleeping_time, t_philo *philo)
 {
 	usleep(sleeping_time - sleeping_time / 10);
 	while (time_elapsed(start_time, get_time()) <= sleeping_time)
-		continue ;
+//	{
+//		if (status == sleep
+//		cjechk
+//		else
+//		usleep
+			continue ;
+
+//	}
 }

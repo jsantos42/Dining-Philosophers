@@ -30,6 +30,8 @@ void	update_status(t_philo *philo, int new_status)
 	philo->status = new_status;
 	if (philo->data->is_everybody_alive)
 		print_philo_status(philo);
+	else
+		philo->status = DEAD;
 	if (new_status == DEAD)
 		philo->data->is_everybody_alive = false;
 	pthread_mutex_unlock(&philo->data->is_everybody_alive_lock);
