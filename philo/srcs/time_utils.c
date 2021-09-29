@@ -30,7 +30,7 @@ void	ft_usleep(t_timeval start_time, uint64_t sleeping_time, t_philo *philo)
 {
 	while (time_elapsed(start_time, get_time()) <= sleeping_time)
 	{
-		if (philo->status == SLEEP)
+		if (philo->status == SLEEP || philo->status == THINK)
 		{
 			if (time_elapsed(philo->last_meal_start, get_time()) >= (uint64_t) philo->time_to_die)
 				update_status(philo, DEAD);

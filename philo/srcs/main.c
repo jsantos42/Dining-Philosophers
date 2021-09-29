@@ -36,7 +36,7 @@ static int	import_input_args(int argc, char **argv, int **input_args)
 
 	if (!is_input_correct(argc, argv))
 		return (print_error_message(ILLEGAL_INPUT));
-	*input_args = malloc(5);
+	*input_args = malloc(5 * sizeof(int));
 	if (!*input_args)
 		return (print_error_message(MALLOC_FAILED));
 	argc--;
@@ -51,10 +51,18 @@ static int	import_input_args(int argc, char **argv, int **input_args)
 
 static void	free_memory(t_data *data, int *input_args)
 {
+	int	iter;
+
 	if (input_args)
 		free(input_args);
 	if (data->philos)
 		free(data->philos);
 	if (data->forks)
+	{
+		iter = -1;
+		while (++iter < data->nb_philo)
+			pthread_mutex_destroy(&data->forks[iter]);
+		pthread_mutex_destroy(&data->is_everybody_alive_lock);
 		free(data->forks);
+	}
 }

@@ -41,11 +41,13 @@ void	release_fork(t_philo *philo, int fork_index)
 
 void	sleep_and_start_thinking(t_philo *philo)
 {
-//	philo->last_meal_start = get_time();
 	release_fork(philo, philo->first_fork);
 	release_fork(philo, philo->second_fork);
 	philo->meal_count++;
 	update_status(philo, SLEEP);
 	ft_usleep(philo->last_meal_start, philo->time_to_sleep + philo->time_to_eat, philo);
 	update_status(philo, THINK);
+//	ft_usleep(philo->last_meal_start, philo->time_to_sleep + philo->time_to_eat + 1, philo);
+	usleep(1000);
+
 }
