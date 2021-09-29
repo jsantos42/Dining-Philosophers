@@ -16,10 +16,9 @@ int	main(int argc, char **argv)
 
 	ret = 0;
 	if (!import_input_args(argc, argv, &input_args)
-	|| !init_philos(&data, input_args)
-	|| !init_forks(&data)
-	|| !start_threads(&data))
-		//printer_mutex??
+		|| !init_philos(&data, input_args)
+		|| !init_forks(&data)
+		|| !start_threads(&data))
 		ret = -1;
 //	free_memory(&data, input_args);
 	return (ret);

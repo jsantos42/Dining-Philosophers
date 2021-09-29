@@ -1,9 +1,9 @@
 #include "../headers/printer_utils.h"
 
-char    *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-	char    *s2;
-	int     size;
+	char	*s2;
+	int		size;
 
 	size = ft_strlen(s1) + 1;
 	s2 = (char *)malloc(size);
@@ -13,9 +13,9 @@ char    *ft_strdup(const char *s1)
 	return (s2);
 }
 
-size_t  ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	size_t  i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -23,11 +23,11 @@ size_t  ft_strlen(const char *s)
 	return (i);
 }
 
-void    *ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	unsigned char       *d;
-	const unsigned char *s;
-	size_t              i;
+	unsigned char		*d;
+	const unsigned char	*s;
+	size_t				i;
 
 	d = dst;
 	s = src;

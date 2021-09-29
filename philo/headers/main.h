@@ -17,6 +17,4 @@
 # include "threads_utils.h"
 # include "utils.h"
 
-
-
 #endif

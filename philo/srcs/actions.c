@@ -1,6 +1,5 @@
 #include "../headers/actions.h"
 
-
 void	try_to_eat(t_philo *philo)
 {
 	long long	time;
@@ -21,10 +20,9 @@ void	try_to_eat(t_philo *philo)
 	}
 }
 
-
 int	could_take_fork(t_philo *philo, int fork_index)
 {
-	bool could_take_a_fork;
+	bool	could_take_a_fork;
 
 	could_take_a_fork = false;
 	pthread_mutex_lock(&philo->data->forks[fork_index]);
@@ -53,4 +51,3 @@ void	sleep_and_start_thinking(t_philo *philo)
 	ft_usleep(philo->data, philo->last_meal_end, philo->time_to_sleep);
 	update_status(philo, THINK);
 }
-

@@ -22,7 +22,6 @@ int	init_philos(t_data *data, int *input_args)
 		data->philos[iter].must_eat = input_args[MUST_EAT];
 		data->philos[iter].meal_count = 0;
 		data->philos[iter].last_meal_end = 0;
-//		data->philos[iter].printer_lock = ;
 		data->philos[iter].data = data;
 		get_fork_order(&data->philos[iter]);
 	}
@@ -74,7 +73,8 @@ void	get_fork_order(t_philo *philo)
 	{
 		philo->first_fork = philo->index;
 		philo->second_fork = (philo->index + 1) % philo->data->nb_philo;
-	} else
+	}
+	else
 	{
 		philo->first_fork = (philo->index + 1) % philo->data->nb_philo;
 		philo->second_fork = philo->index;

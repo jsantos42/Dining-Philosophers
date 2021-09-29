@@ -11,7 +11,7 @@ int	start_threads(t_data *data)
 	pthread_t	*thread;
 	t_philo		*philo;
 
-	if (pthread_create(&data->dead_checker, NULL, check_for_dead_philos, (void*)data) != 0)
+	if (pthread_create(&data->dead_checker, NULL, check_for_dead, data) != 0)
 		return (print_error_message(THREAD_CREATION_FAILED));
 	data->start_time_ms = 0;
 	data->start_time_ms = get_time(data);
@@ -20,7 +20,7 @@ int	start_threads(t_data *data)
 	{
 		thread = &data->philos[iter].thread;
 		philo = &data->philos[iter];
-		if (pthread_create(thread, NULL, eat_sleep_think_repeat, (void*)philo) != 0)
+		if (pthread_create(thread, NULL, eat_sleep_think_repeat, philo) != 0)
 			return (print_error_message(THREAD_CREATION_FAILED));
 	}
 	iter = -1;
@@ -47,11 +47,7 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	while (philo->data->is_everybody_alive && is_missing_a_meal(philo))
 	{
 		if (get_time(philo->data) >= philo->last_meal_end + philo->time_to_die)
-		{
-//			printf("%lld thread %d is going to be dead\n", get_time(philo->data), philo->index);
 			update_status(philo, DEAD);
-			break;
-		}
 		else if (philo->status == THINK)
 			try_to_eat(philo);
 		else if (philo->status == EAT)
@@ -60,10 +56,11 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	return (NULL);
 }
 
-void	*check_for_dead_philos(void *data_cast_to_void)
+void	*check_for_dead(void *data_cast_to_void)
 {
-	t_data	*data;
-	int		iter;
+	t_data		*data;
+	t_philo		*philo;
+	int			iter;
 	long long	time;
 
 	data = (t_data *)data_cast_to_void;
@@ -73,7 +70,8 @@ void	*check_for_dead_philos(void *data_cast_to_void)
 		iter = -1;
 		while (++iter < data->nb_philo)
 		{
-			if (time >= data->philos[iter].last_meal_end + data->philos[iter].time_to_die)
+			philo = &data->philos[iter];
+			if (time >= philo->last_meal_end + philo->time_to_die)
 			{
 				update_status(&data->philos[iter], DEAD);
 				return (NULL);

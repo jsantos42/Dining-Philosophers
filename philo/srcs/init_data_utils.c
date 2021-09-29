@@ -2,7 +2,6 @@
 
 static int	is_positive_int(char *str);
 
-
 /*
 **	Checks if the program arguments are correct. They should be 4 or 5, and all
 **	of them should be positive ints. Plus, the number of philosophers (argv[1])
@@ -47,12 +46,11 @@ static int	is_positive_int(char *str)
 	return (1);
 }
 
-
 int	import_int(char *str)
 {
 	long	temp;
 	int		sign;
-	int 	output;
+	int		output;
 
 	temp = 0;
 	sign = 1;

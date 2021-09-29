@@ -1,6 +1,5 @@
 #include "../headers/threads_utils.h"
 
-
 /*
 **	Checks whether all philosophers are still alive.
 */
@@ -25,7 +24,6 @@ int	is_missing_a_meal(t_philo *philo)
 		return (0);
 }
 
-
 void	update_status(t_philo *philo, int new_status)
 {
 	pthread_mutex_lock(&philo->data->is_everybody_alive_lock);
@@ -38,6 +36,7 @@ void	update_status(t_philo *philo, int new_status)
 }
 
 /*
- * tem de se passar o tempo para a funcao de printar. se for excessivo, printa morto no tempo certo e desliga
+ * tem de se passar o tempo para a funcao de printar. se for excessivo,
+ * printa morto no tempo certo e desliga
  * considerar eliminar o 2o fork update
  */

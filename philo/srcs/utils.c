@@ -13,7 +13,6 @@ int	is_in_range_long(long value, long min, long max)
 	return (value >= min && value <= max);
 }
 
-
 /*
 **	The timeval struct (here typedefed as t_timeval) has:
 **	  - a value tv_sec which is the number of seconds since Jan. 1, 1970, and
@@ -22,10 +21,10 @@ int	is_in_range_long(long value, long min, long max)
 **	from that date.
 */
 
-long long get_time(t_data *data)
+long long	get_time(t_data *data)
 {
 	t_timeval	timeval;
-	long long 	milliseconds;
+	long long	milliseconds;
 
 	if (gettimeofday(&timeval, NULL) == -1)
 		return (0);
@@ -34,9 +33,8 @@ long long get_time(t_data *data)
 	return (milliseconds);
 }
 
-
-void	ft_usleep(t_data *data, long long starting_point, int sleeping_time)
+void	ft_usleep(t_data *data, long long start_point, int sleeping_time)
 {
-	while (get_time(data) < starting_point + sleeping_time)
+	while (get_time(data) < start_point + sleeping_time)
 		usleep(sleeping_time / 10);
 }
