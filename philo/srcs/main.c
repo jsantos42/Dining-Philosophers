@@ -14,6 +14,7 @@ int	main(int argc, char **argv)
 	int		*input_args;
 	int		ret;
 
+	input_args = NULL;
 	ret = 0;
 	if (!import_input_args(argc, argv, &input_args)
 		|| !init_philos(&data, input_args)
