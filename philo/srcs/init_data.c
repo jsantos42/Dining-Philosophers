@@ -68,14 +68,6 @@ int	init_forks(t_data *data)
 
 void	get_fork_order(t_philo *philo)
 {
-//	if (philo->index % 2)
-//	{
-		philo->first_fork = philo->index;
-		philo->second_fork = (philo->index + 1) % philo->data->nb_philo;
-//	}
-//	else
-//	{
-//		philo->first_fork = (philo->index + 1) % philo->data->nb_philo;
-//		philo->second_fork = philo->index;
-//	}
+	philo->first_fork = philo->index;
+	philo->second_fork = (philo->index + 1) % philo->data->nb_philo;
 }

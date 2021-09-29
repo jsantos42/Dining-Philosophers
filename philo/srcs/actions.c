@@ -45,9 +45,8 @@ void	sleep_and_start_thinking(t_philo *philo)
 	release_fork(philo, philo->second_fork);
 	philo->meal_count++;
 	update_status(philo, SLEEP);
-	ft_usleep(philo->last_meal_start, philo->time_to_sleep + philo->time_to_eat, philo);
+	ft_usleep(philo->last_meal_start,
+		   philo->time_to_sleep + philo->time_to_eat, philo);
 	update_status(philo, THINK);
-//	ft_usleep(philo->last_meal_start, philo->time_to_sleep + philo->time_to_eat + 1, philo);
 	usleep(1000);
-
 }

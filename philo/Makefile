@@ -1,5 +1,5 @@
 CC	=				gcc
-CFLAGS =			-Wall -Werror -Wextra -g# -fsanitize=thread
+CFLAGS =			-Wall -Werror -Wextra
 RM =				rm -rf
 
 NAME =				philo

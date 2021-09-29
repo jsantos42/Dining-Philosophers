@@ -5,6 +5,7 @@
 
 t_timeval	get_time(void);
 u_int64_t	time_elapsed(t_timeval start_time, t_timeval end_time);
-void		ft_usleep(t_timeval start_time, uint64_t sleeping_time, t_philo *philo);
+void		ft_usleep(t_timeval start_time, uint64_t sleeping_time,
+				t_philo *philo);
 
 #endif
