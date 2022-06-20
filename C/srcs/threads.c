@@ -43,7 +43,7 @@ void	*eat_sleep_think_repeat(void *philo_cast_to_void)
 	while (philo->status != DEAD && is_missing_a_meal(philo))
 	{
 		if (time_elapsed(philo->last_meal_start, get_time())
-			>= (uint64_t)philo->time_to_die)
+			>= (u_int64_t)philo->time_to_die)
 			update_status(philo, DEAD);
 		else if (philo->status == THINK)
 			try_to_eat(philo);

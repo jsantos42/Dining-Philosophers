@@ -4,7 +4,7 @@ void	print_philo_status(t_philo *philo)
 {
 	int				status;
 	char			*update;
-	uint64_t		time;
+	u_int64_t		time;
 
 	status = philo->status;
 	if (status == THINK)
@@ -20,7 +20,7 @@ void	print_philo_status(t_philo *philo)
 	else
 		update = ft_strdup("\x1B[31mjust died");
 	time = time_elapsed(philo->data->start_time_ms, get_time());
-	printf("%6llu ms	%2d %s.\n", time, philo->index + 1, update);
+	printf("%6lu ms	%2d %s.\n", time, philo->index + 1, update);
 	free(update);
 }
 

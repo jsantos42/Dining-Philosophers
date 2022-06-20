@@ -1,4 +1,5 @@
 #include "../headers/actions.h"
+#include "../headers/time_utils.h"
 
 void	try_to_eat(t_philo *philo)
 {
